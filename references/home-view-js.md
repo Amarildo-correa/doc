@@ -34,11 +34,11 @@ export function HomeView(root) {
 
 ## Fluxo completo de execução
 
-- 1. Usuário acessa '/' → router.js monta 'HomeView(root)'.
-- 2. 'render()' é chamado imediatamente, disparando 'getPrompts()' (assíncrono).
-- 3. Enquanto a requisição está pendente, a tela permanece vazia (não há estado de loading explícito aqui — uma melhoria possível seria adicioná-lo).
-- 4. Quando a Promise resolve, os 3 primeiros prompts são transformados em cards via 'createCard' e inseridos no DOM.
-- 5. Se a store mudar por qualquer motivo (ex.: login), 'render()' roda de novo, buscando os dados outra vez.
+-   1. Usuário acessa '/' → router.js monta 'HomeView(root)'.
+-   2. 'render()' é chamado imediatamente, disparando 'getPrompts()' (assíncrono).
+-   3. Enquanto a requisição está pendente, a tela permanece vazia (não há estado de loading explícito aqui — uma melhoria possível seria adicioná-lo).
+-   4. Quando a Promise resolve, os 3 primeiros prompts são transformados em cards via 'createCard' e inseridos no DOM.
+-   5. Se a store mudar por qualquer motivo (ex.: login), 'render()' roda de novo, buscando os dados outra vez.
 
 ## Por que 'render' é re-executado a cada mudança de store, mesmo sem depender diretamente dela
 
