@@ -1,0 +1,9 @@
+{
+  "name": "promptdown-docs",
+  "version": "1.0.0",
+  "description": "Base de conhecimento do projeto promptdown-ui-v3: SPA vanilla, design system dark minimalista, backend mock e setup multi-agente.",
+  "author": {
+    "name": "Amarildo-correa"
+  },
+  "keywords": ["promptdown", "docs", "multi-agente", "design-system", "vanilla-spa"]
+}

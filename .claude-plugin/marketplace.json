@@ -1,0 +1,14 @@
+{
+  "name": "doc",
+  "owner": { "name": "Amarildo-correa" },
+  "version": "1.0.0",
+  "description": "Base de conhecimento do projeto promptdown-ui-v3 e guia de repositório multi-agente.",
+  "plugins": [
+    {
+      "name": "promptdown-docs",
+      "source": "./plugins/promptdown-docs",
+      "version": "1.0.0",
+      "keywords": ["promptdown", "docs", "multi-agente", "spa", "design-system"]
+    }
+  ]
+}
