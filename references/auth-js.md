@@ -49,3 +49,54 @@ server.use("/api", router);
 ## Escalando esta ideia
 
 Se o número de regras de autorização crescer (papéis, permissões por recurso), a recomendação é extrair a lógica de decisão para uma função pura testável separadamente — `canAccess(role, resource)` — e manter o middleware apenas como a 'cola' que lê o request e chama essa função, preservando testabilidade sem reescrever o pipeline.
+
+---
+
+# Guia rápido — Toggle de autenticação (`auth.js`)
+
+## Localização do toggle
+
+`promptdown-ui-v3/api/middleware/auth.js` — primeira linha do arquivo.
+
+## Desligar (acesso livre)
+
+```js
+const AUTH_ENABLED = false;
+```
+
+Qualquer requisição para `/api/*` passa direto, sem verificar token.
+Use em desenvolvimento local ou quando apenas pessoas de confiança acessam.
+
+## Ligar (exige token)
+
+```js
+const AUTH_ENABLED = true;
+```
+
+Toda requisição deve enviar o header:
+
+```
+Authorization: Bearer mock-token
+```
+
+Sem o header → 401 Unauthorized
+Header errado → 403 Forbidden
+
+## O que muda em cada cenário
+
+| AUTH_ENABLED | GET /api/prompts | POST /PATCH /DELETE |
+|---|---|---|
+| false | ✅ livre | ✅ livre |
+| true | ❌ exige token | ❌ exige token |
+
+## O que NÃO muda
+
+- Nenhum outro arquivo precisa ser editado.
+- O pipeline do `server.js` permanece intacto.
+- Os demais middlewares (`logger`, `request-delay`) continuam ativos.
+
+## Atenção em produção
+
+`mock-token` é uma string fixa e pública — qualquer pessoa que leia
+o código-fonte consegue se autenticar. Para proteção real, substitua
+por JWT assinado ou Basic Auth no Nginx.

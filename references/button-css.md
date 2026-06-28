@@ -4,12 +4,12 @@ Segue uma convenção parecida com BEM: a classe base '.btn' carrega o que é co
 .btn {
     display: inline-flex; /* alinha ícone + texto na mesma linha de base */
     align-items: center;
-    gap: var(--spacing-sm);
-    padding: var(--spacing-sm) var(--spacing-md);
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
     border: 1px solid transparent; /* reserva espaço da borda mesmo sem cor,
                                        evitando salto de layout ao focar */
-    border-radius: 0.375rem;
-    font-size: var(--font-size-base);
+    /* cantos sempre retos — nunca border-radius */
+    font-size: var(--text-base);
     cursor: pointer;
 }
 
@@ -20,7 +20,7 @@ Segue uma convenção parecida com BEM: a classe base '.btn' carrega o que é co
 
 .btn:focus-visible {
     outline: 2px solid var(--color-accent);
-    outline-offset: 2px;
+    outline-offset: -2px; /* dentro da borda, não por fora */
 }
 ```
 
@@ -42,7 +42,8 @@ Se '.btn--primary' alterasse também o padding ou o tamanho de fonte, botões de
 }
 
 .btn--ghost:hover {
-    background: var(--color-hover);
+    border-color: var(--color-accent);
+    color: var(--color-accent);
 }
 ```
 

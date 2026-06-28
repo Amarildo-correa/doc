@@ -1,4 +1,4 @@
-Define apenas onde as coisas ficam posicionadas (cabeçalho, conteúdo, rodapé) — não cor nem tipografia de componentes específicos.
+Define apenas onde as coisas ficam posicionadas (cabeçalho, conteúdo, rodapé) — não cor nem tipografia de componentes específicos. A estrutura macro de página (`.app-layout`) vive aqui; o sistema de grid de células (`.g-row` / `.g-cell`) que governa o interior de cada componente é responsabilidade de cada folha de componente, não desta.
 
 ```css
 .app-layout {
@@ -15,13 +15,13 @@ Define apenas onde as coisas ficam posicionadas (cabeçalho, conteúdo, rodapé)
     /* repeat + auto-fill + minmax: quantas colunas cabem decide o
        navegador, sem precisar de media queries manuais para cada largura */
     grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-    gap: var(--spacing-md);
+    gap: var(--space-4);
 }
 ```
 
 ## Separação entre 'onde' (layout) e 'como parece' (componente)
 
-'.prompt-grid' aqui só decide o posicionamento (quantas colunas, espaçamento entre itens) — a aparência de cada item individual (bordas, cor de fundo, sombra) é responsabilidade de 'card.css'. Essa divisão permite reusar '.prompt-grid' para exibir qualquer tipo de card no futuro, sem acoplar a grade a um componente visual específico.
+'.prompt-grid' aqui só decide o posicionamento (quantas colunas, espaçamento entre itens) — a aparência de cada item individual (bordas, tipografia) é responsabilidade de 'card.css'. Essa divisão permite reusar '.prompt-grid' para exibir qualquer tipo de card no futuro, sem acoplar a grade a um componente visual específico.
 
 ## Por que 'grid' em vez de 'flexbox' para esse caso
 

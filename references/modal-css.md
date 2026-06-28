@@ -1,21 +1,23 @@
-Um modal tem duas camadas visuais: o 'overlay' (fundo escuro semitransparente que cobre a tela toda e bloqueia clique) e o 'dialog' (a caixa de conteúdo em si, centralizada). 'modal.js' aplica essas classes; este arquivo define como elas se comportam.
+Um modal tem duas camadas visuais: o 'overlay' (fundo que cobre a tela toda e bloqueia clique) e o 'dialog' (a caixa de conteúdo em si, centralizada). 'modal.js' aplica essas classes; este arquivo define como elas se comportam.
 
 ```css
 .modal-overlay {
     position: fixed; /* sai do fluxo normal, sobrepõe TODO o conteúdo */
     inset: 0;
-    background: rgba(0, 0, 0, 0.6); /* escurece o fundo, sinaliza foco no modal */
+    /* cor sólida do token — nunca rgba() ou gradiente */
+    background: var(--color-bg);
     display: flex;
     align-items: center;
     justify-content: center; /* centraliza .modal__dialog em qualquer
                                  tamanho de tela, sem cálculos manuais */
-    z-index: 50; /* garante que fica acima de qualquer outro elemento da página */
+    z-index: 50; /* faixa reservada para overlays — ver comentário abaixo */
 }
 
 .modal__dialog {
-    background: var(--color-panel);
-    border-radius: 0.5rem;
-    padding: var(--spacing-lg);
+    /* cantos sempre retos — nunca border-radius */
+    /* sem background-color próprio — herda --color-bg do body */
+    border: 1px solid var(--color-border);
+    padding: var(--space-6);
     max-width: 90vw;
     max-height: 90vh; /* nunca maior que a viewport, mesmo com conteúdo extenso */
     overflow-y: auto; /* permite rolar o conteúdo interno em vez de
@@ -37,4 +39,4 @@ Usar valores arbitrariamente altos ('9999', '99999') é uma armadilha comum: cad
 
 ## Performance e GPU
 
-Como o overlay usa 'rgba()' com transparência sobre uma área grande da tela, ele força o navegador a compor essa camada — geralmente leve, mas relevante notar em dispositivos de baixo desempenho caso animações (ex.: fade-in) sejam adicionadas no futuro; nesses casos, animar 'opacity' (composto via GPU) é preferível a animar a própria cor de fundo.
+O overlay usa uma cor sólida do token (`--color-bg`), sem transparência — a separação entre overlay e conteúdo de trás vem da borda de 1px do dialog, não de um fundo semitransparente. Caso animações (ex.: fade-in) sejam adicionadas no futuro, animar 'opacity' (composto via GPU) é preferível a animar a própria cor de fundo, que força o navegador a recompor uma área grande da tela a cada frame.

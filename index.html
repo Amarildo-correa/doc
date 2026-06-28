@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Aula Engenharia de Software</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%237aa2f7'%3E%3Cpath d='M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 1l.013.157A1.978 1.978 0 0 1 2.19 3h5.396l-.707-.707z'/%3E%3C/svg%3E"
+            type="image/svg+xml"
+        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+        <!-- Prism.js — destaque de sintaxe nos blocos de código do rodapé -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+
+        <!-- Bootstrap Icons — chevron de expandir/recolher pastas na árvore -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+        <style>
+            :root {
+                --bg: #1a1b26;
+                --panel: #16161e;
+                --text: #c0caf5;
+                --muted: #9aa5ce;
+                --accent: #7aa2f7;
+                --hover: rgba(122, 162, 247, 0.15);
+                --border: #2a2e3a;
+                --footer-h: 9.5rem;
+                --footer-h-collapsed: 2.75rem;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            /* Scrollbar — segue a paleta do site (Firefox) */
+            * {
+                scrollbar-color: var(--border) var(--panel);
+                scrollbar-width: thin;
+            }
+
+            /* Scrollbar — segue a paleta do site (Chrome/Edge/Safari) */
+            *::-webkit-scrollbar {
+                width: 0.625rem;
+                height: 0.625rem;
+            }
+
+            *::-webkit-scrollbar-track {
+                background: var(--panel);
+            }
+
+            *::-webkit-scrollbar-thumb {
+                background: var(--border);
+                border-radius: 0.3125rem;
+            }
+
+            *::-webkit-scrollbar-thumb:hover {
+                background: var(--accent);
+            }
+
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--text);
+                font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+                font-size: 1rem;
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                padding-bottom: var(--footer-h);
+                transition: padding-bottom 0.2s ease;
+            }
+
+            body.footer-collapsed {
+                padding-bottom: var(--footer-h-collapsed);
+            }
+
+            /* Container da árvore */
+            .tree {
+                width: 100%;
+                max-width: 56.25rem;
+                background: var(--panel);
+                border: 1px solid var(--border);
+                padding: 0.875rem;
+                overflow: auto;
+            }
+
+            .node {
+                cursor: pointer;
+                user-select: none;
+                padding: 0.25rem 0.375rem;
+                border-radius: 0.375rem;
+                white-space: nowrap;
+            }
+
+            .node:hover {
+                background: var(--hover);
+            }
+
+            .node.folder.open:hover {
+                background: none;
+            }
+
+            .node.selected {
+                background: var(--hover);
+            }
+
+            .children {
+                margin-left: 1rem;
+                display: none;
+                border-left: 1px solid var(--border);
+                padding-left: 0.625rem;
+            }
+
+            .open > .children {
+                display: block;
+            }
+
+            .node__chevron {
+                display: inline-block;
+                width: 1rem;
+                margin-right: 0.25rem;
+                color: var(--muted);
+            }
+
+            .node__icon {
+                margin-right: 0.375rem;
+            }
+
+            .folder > .node__icon {
+                color: var(--accent);
+            }
+
+            .file > .node__icon {
+                color: var(--muted);
+            }
+
+            /* Rodapé contextual */
+            .context-footer {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 10;
+                background: var(--panel);
+                border-top: 1px solid var(--border);
+                box-shadow: 0 -0.25rem 0.75rem rgba(0, 0, 0, 0.35);
+                height: var(--footer-h);
+                display: flex;
+                flex-direction: column;
+                transition: height 0.2s ease;
+            }
+
+            .context-footer.collapsed {
+                height: var(--footer-h-collapsed);
+            }
+
+            .context-footer.collapsed .context-footer__body {
+                display: none;
+            }
+
+            .context-footer.fullscreen {
+                height: 100vh; /* fallback p/ navegadores sem dvh */
+                height: 100dvh; /* área realmente visível no mobile */
+            }
+
+            .context-footer__header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 0.75rem;
+                padding: 0.5rem 0.875rem;
+                border-bottom: 1px solid var(--border);
+                flex-shrink: 0;
+                touch-action: none;
+                user-select: none;
+                cursor: grab;
+            }
+
+            .context-footer.dragging {
+                transition: none;
+            }
+
+            .context-footer.dragging .context-footer__header {
+                cursor: grabbing;
+            }
+
+            .context-footer.collapsed .context-footer__header {
+                border-bottom: none;
+            }
+
+            .context-footer__title {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                min-width: 0;
+                color: var(--text);
+                font-weight: 600;
+            }
+
+            .context-footer__icon {
+                flex-shrink: 0;
+            }
+
+            .context-footer__icon.bi-folder {
+                color: var(--accent);
+            }
+
+            .context-footer__icon.bi-file-earmark {
+                color: var(--muted);
+            }
+
+            .context-footer__name {
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .context-footer__badge {
+                flex-shrink: 0;
+                font-size: 1rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--accent);
+                border: 1px solid var(--border);
+                border-radius: 0.25rem;
+                padding: 0.0625rem 0.375rem;
+            }
+
+            .context-footer__actions {
+                display: flex;
+                align-items: center;
+                gap: 0.375rem;
+                flex-shrink: 0;
+            }
+
+            .context-footer__toggle,
+            .context-footer__fullscreen {
+                flex-shrink: 0;
+                background: transparent;
+                border: 1px solid var(--border);
+                color: var(--muted);
+                border-radius: 0.375rem;
+                width: 1.75rem;
+                height: 1.75rem;
+                line-height: 1;
+                cursor: pointer;
+                font-size: 1rem;
+            }
+
+            .context-footer__toggle:hover,
+            .context-footer__fullscreen:hover {
+                color: var(--text);
+                background: var(--hover);
+            }
+
+            .context-footer__fullscreen[aria-pressed="true"] {
+                color: var(--accent);
+                border-color: var(--accent);
+            }
+
+            .context-footer__body {
+                flex: 1 1 auto;
+                min-height: 0;
+                padding: 0.625rem 0.875rem 0.875rem;
+                overflow-y: auto;
+            }
+
+            .context-footer__desc {
+                margin: 0;
+                color: var(--text);
+                line-height: 1.6;
+                font-weight: 600;
+            }
+
+            .context-footer__lesson {
+                margin-top: 0.5rem;
+                transition: opacity 0.15s ease;
+            }
+
+            /* Conteúdo vem de references/*.md convertido por marked.js — as tags
+               são geradas sem classes, por isso os seletores abaixo são por elemento. */
+            .context-footer__lesson h1,
+            .context-footer__lesson h2,
+            .context-footer__lesson h3,
+            .context-footer__lesson h4 {
+                margin: 1rem 0 0.375rem;
+                color: var(--accent);
+                font-size: 1rem;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+
+            .context-footer__lesson h1:first-child,
+            .context-footer__lesson h2:first-child,
+            .context-footer__lesson h3:first-child,
+            .context-footer__lesson h4:first-child {
+                margin-top: 0;
+            }
+
+            .context-footer__lesson p {
+                margin: 0 0 0.5rem;
+                color: var(--muted);
+                line-height: 1.6;
+            }
+
+            .context-footer__lesson ul,
+            .context-footer__lesson ol {
+                margin: 0 0 0.5rem;
+                padding-left: 1.125rem;
+                color: var(--muted);
+                line-height: 1.6;
+            }
+
+            .context-footer__lesson li {
+                margin-bottom: 0.25rem;
+            }
+
+            /* URLs (ex.: seção "## Fontes") são uma única string sem espaço — sem isto,
+               o navegador não tem onde quebrar a linha e o link estoura a tela em telas pequenas. */
+            .context-footer__lesson a {
+                color: var(--accent);
+                overflow-wrap: break-word;
+                word-break: break-word;
+            }
+
+            .context-footer__lesson pre {
+                margin: 0 0 0.75rem;
+                background: var(--bg);
+                border: 1px solid var(--border);
+                border-radius: 0.375rem;
+                padding: 0.625rem 0.75rem;
+                overflow-x: auto;
+            }
+
+            /* Wrapper criado em JS ao redor de toda <table> renderizada — sem ele, uma
+               tabela mais larga que o rodapé não tem scroll próprio e estoura a página. */
+            .context-footer__table-wrap {
+                max-width: 100%;
+                overflow-x: auto;
+                margin: 0 0 0.75rem;
+                border: 1px solid var(--border);
+                border-radius: 0.375rem;
+            }
+
+            .context-footer__lesson table {
+                border-collapse: collapse;
+                font-size: 1rem;
+                color: var(--muted);
+            }
+
+            .context-footer__lesson th,
+            .context-footer__lesson td {
+                padding: 0.375rem 0.625rem;
+                border-bottom: 1px solid var(--border);
+                text-align: left;
+                vertical-align: top;
+            }
+
+            .context-footer__lesson th {
+                color: var(--text);
+                white-space: nowrap;
+            }
+
+            .context-footer__lesson tr:last-child td {
+                border-bottom: none;
+            }
+
+            .context-footer__lesson pre code {
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono";
+                color: var(--text);
+                font-size: 1rem;
+                line-height: 1.5;
+                white-space: pre;
+            }
+
+            /* Markdown de exemplo (ex.: SKILL.md/AGENTS.md ilustrativos) é prosa, não código
+               sensível a indentação — quebrar linha em vez de forçar scroll evita que uma
+               única linha longa estoure a largura do rodapé. */
+            .context-footer__lesson pre code.language-markdown {
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+
+            .context-footer__lesson.is-loading {
+                opacity: 0.5;
+            }
+
+            .context-footer__lesson-error {
+                color: #f7768e;
+            }
+
+            .context-footer__path {
+                margin: 0.5rem 0 0;
+                color: var(--accent);
+                font-size: 1rem;
+                word-break: break-all;
+            }
+
+            /* Desktop — duas colunas: árvore à esquerda, rodapé como sidebar à direita */
+            @media (min-width: 64rem) {
+                body {
+                    flex-direction: row;
+                    align-items: flex-start;
+                    padding: 1rem;
+                    padding-bottom: 1rem;
+                    gap: 1rem;
+                }
+
+                body.footer-collapsed {
+                    padding-bottom: 1rem;
+                }
+
+                .tree {
+                    flex: 0 0 auto;
+                    width: auto;
+                    max-width: none;
+                    white-space: nowrap;
+                }
+
+                .context-footer {
+                    position: sticky;
+                    top: 1rem;
+                    left: auto;
+                    right: auto;
+                    bottom: auto;
+                    flex: 1 1 auto;
+                    width: auto;
+                    height: calc(100vh - 2rem);
+                    border-top: none;
+                    border-left: 1px solid var(--border);
+                    box-shadow: -0.25rem 0 0.75rem rgba(0, 0, 0, 0.35);
+                }
+
+                .context-footer.collapsed {
+                    height: auto;
+                }
+
+                .context-footer.fullscreen {
+                    height: calc(100vh - 2rem);
+                }
+            }
+
+            /* Mobile refinamento */
+            @media (max-width: 37.5rem) {
+                .tree {
+                    max-width: 100%;
+                }
+
+                .node {
+                    font-size: 1rem;
+                }
+
+                .context-footer {
+                    height: 11rem;
+                }
+
+                .context-footer__header {
+                    padding: 0.5rem 0.625rem;
+                }
+
+                .context-footer__body {
+                    padding: 0.5rem 0.625rem 0.75rem;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="tree" id="tree"></div>
+
+        <footer class="context-footer" id="contextFooter">
+            <div class="context-footer__header">
+                <div class="context-footer__title">
+                    <i class="bi bi-folder context-footer__icon" id="footerIcon"></i>
+                    <span class="context-footer__name" id="footerName">promptdown-ui-v3</span>
+                </div>
+                <span class="context-footer__badge" id="footerBadge">pasta</span>
+                <div class="context-footer__actions">
+                    <button class="context-footer__fullscreen" id="footerFullscreen" type="button" aria-pressed="false" title="Expandir para tela cheia">⛶</button>
+                    <button class="context-footer__toggle" id="footerToggle" type="button" aria-expanded="true" aria-controls="footerBody" title="Minimizar rodapé">▾</button>
+                </div>
+            </div>
+            <div class="context-footer__body" id="footerBody">
+                <p class="context-footer__desc" id="footerDesc">Clique em uma pasta ou arquivo na árvore para ver sua função dentro do projeto.</p>
+                <div class="context-footer__lesson" id="footerLesson"></div>
+                <p class="context-footer__path" id="footerPath"></p>
+            </div>
+        </footer>
+
+        <!-- Prism.js — core + autoloader (busca a gramática de cada linguagem sob demanda) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+
+        <!-- marked.js + DOMPurify — Markdown das aulas (references/*.md) convertido e sanitizado antes de ir para o DOM -->
+        <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+
+        <script>
+            Prism.plugins.autoloader.languages_path = "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/";
+
+            const PRISM_LANG_MAP = {
+                text: null, // sem gramática — fica em texto puro
+                js: "javascript",
+                dockerfile: "docker",
+            };
+
+            // SKILL.md é a ÚNICA fonte da árvore: cada linha "- `path` (folder|file) → `doc/references/slug.md` — summary"
+            // descreve um nó. A hierarquia é inferida só pelos segmentos de `path` (não pela ordem das linhas).
+            function parseSkillIndex(markdown) {
+                const LINE_RE = /^- `([^`]+)` \((folder|file)\) → `doc\/references\/([^`]+)\.md` — (.+)$/;
+                return markdown
+                    .split("\n")
+                    .map((line) => LINE_RE.exec(line))
+                    .filter(Boolean)
+                    .map((match) => ({ path: match[1], type: match[2], slug: match[3], summary: match[4] }));
+            }
+
+            // Monta a árvore aninhada { name, type, path, slug, summary, children } a partir
+            // da lista plana de entradas — sem precisar de comentário inline nem DESCRIPTIONS.
+            function buildTree(entries) {
+                const nodesByPath = new Map();
+                for (const entry of entries) {
+                    const segments = entry.path.split("/");
+                    const name = segments[segments.length - 1];
+                    nodesByPath.set(entry.path, { name, type: entry.type, path: entry.path, slug: entry.slug, summary: entry.summary, children: [] });
+                }
+                let root = null;
+                for (const entry of entries) {
+                    const segments = entry.path.split("/");
+                    const node = nodesByPath.get(entry.path);
+                    if (segments.length === 1) {
+                        root = node;
+                        continue;
+                    }
+                    const parent = nodesByPath.get(segments.slice(0, -1).join("/"));
+                    if (parent) parent.children.push(node);
+                }
+                return root;
+            }
+
+            async function renderLessonFromMarkdown(container, slug) {
+                container.replaceChildren();
+                container.classList.add("is-loading");
+                try {
+                    const res = await fetch(`references/${slug}.md`);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                    const md = await res.text();
+                    const dirtyHtml = marked.parse(md);
+                    const cleanHtml = DOMPurify.sanitize(dirtyHtml);
+                    container.innerHTML = cleanHtml; // único innerHTML do projeto — conteúdo já sanitizado pelo DOMPurify acima
+                    // Tabelas largas (markdown) não têm scroll próprio por padrão — sem este wrapper,
+                    // uma tabela mais larga que o rodapé estoura e cria scroll horizontal na página inteira.
+                    container.querySelectorAll("table").forEach((table) => {
+                        const wrap = document.createElement("div");
+                        wrap.className = "context-footer__table-wrap";
+                        table.replaceWith(wrap);
+                        wrap.appendChild(table);
+                    });
+                    // Links das aulas (ex.: URLs em "## Fontes") abrem em nova aba — noopener/noreferrer
+                    // evita que a página aberta tenha acesso a `window.opener` desta aba.
+                    container.querySelectorAll("a[href]").forEach((linkEl) => {
+                        linkEl.setAttribute("target", "_blank");
+                        linkEl.setAttribute("rel", "noopener noreferrer");
+                    });
+                    container.querySelectorAll("pre code[class*='language-']").forEach((codeEl) => {
+                        const rawLang = codeEl.className.replace("language-", "");
+                        const prismLang = rawLang in PRISM_LANG_MAP ? PRISM_LANG_MAP[rawLang] : rawLang;
+                        codeEl.classList.remove(`language-${rawLang}`);
+                        if (prismLang) {
+                            codeEl.classList.add(`language-${prismLang}`);
+                            if (window.Prism) Prism.highlightElement(codeEl);
+                        }
+                    });
+                } catch (err) {
+                    container.replaceChildren();
+                    const el = document.createElement("p");
+                    el.className = "context-footer__lesson-p context-footer__lesson-error";
+                    el.textContent = "Não foi possível carregar a aula deste item.";
+                    container.appendChild(el);
+                } finally {
+                    container.classList.remove("is-loading");
+                }
+            }
+
+            const footerEl = document.getElementById("contextFooter");
+            const footerIcon = document.getElementById("footerIcon");
+            const footerName = document.getElementById("footerName");
+            const footerBadge = document.getElementById("footerBadge");
+            const footerDesc = document.getElementById("footerDesc");
+            const footerLesson = document.getElementById("footerLesson");
+            const footerPath = document.getElementById("footerPath");
+            const footerToggle = document.getElementById("footerToggle");
+            const footerFullscreen = document.getElementById("footerFullscreen");
+
+            let selectedEl = null;
+
+            // ── Persistência de estado (localStorage) ────────────────────────
+            // Guarda altura do rodapé e item selecionado para sobreviver a um
+            // reload indesejado do navegador.
+            const STORAGE_KEY = "repoTreeViewer:state";
+
+            function loadState() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+                } catch {
+                    return {};
+                }
+            }
+
+            // Merge parcial: atualiza só as chaves passadas, preserva o resto
+            function saveState(patch) {
+                try {
+                    const next = { ...loadState(), ...patch };
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+                } catch {
+                    /* localStorage indisponível (modo privado/cota) — ignora */
+                }
+            }
+
+            async function selectNode(el, { type, path, summary, slug, name }) {
+                if (selectedEl) selectedEl.classList.remove("selected");
+                el.classList.add("selected");
+                selectedEl = el;
+
+                footerIcon.classList.toggle("bi-folder", type === "folder");
+                footerIcon.classList.toggle("bi-file-earmark", type !== "folder");
+                footerName.textContent = name;
+                footerBadge.textContent = type === "folder" ? "pasta" : "arquivo";
+                footerDesc.textContent = summary;
+                footerPath.textContent = path;
+
+                saveState({ selectedPath: path });
+
+                await renderLessonFromMarkdown(footerLesson, slug);
+            }
+
+            // Índice de nós por caminho — permite restaurar a seleção salva
+            const nodeIndex = new Map();
+
+            // Troca o ícone de chevron (▸/▾) de uma pasta sem afetar chevrons de subpastas
+            function setChevron(folderEl, open) {
+                const chevron = folderEl.querySelector(":scope > i.node__chevron");
+                if (!chevron) return;
+                chevron.classList.toggle("bi-chevron-right", !open);
+                chevron.classList.toggle("bi-chevron-down", open);
+            }
+
+            function createNode(node) {
+                const el = document.createElement("div");
+                el.className = "node " + node.type;
+
+                if (node.type === "folder") {
+                    const chevron = document.createElement("i");
+                    chevron.className = "bi bi-chevron-right node__chevron";
+                    el.appendChild(chevron);
+                }
+
+                const typeIcon = document.createElement("i");
+                typeIcon.className = `bi ${node.type === "folder" ? "bi-folder" : "bi-file-earmark"} node__icon`;
+                el.appendChild(typeIcon);
+
+                el.appendChild(document.createTextNode(node.name));
+
+                // Guarda os dados necessários para reselecionar depois
+                nodeIndex.set(node.path, { el, ...node });
+
+                if (node.type === "folder") {
+                    const childrenWrap = document.createElement("div");
+                    childrenWrap.className = "children";
+
+                    const sortedChildren = [...(node.children || [])].sort((a, b) => {
+                        if (a.type === b.type) return 0;
+                        return a.type === "folder" ? -1 : 1;
+                    });
+
+                    sortedChildren.forEach((child) => {
+                        childrenWrap.appendChild(createNode(child));
+                    });
+
+                    el.appendChild(childrenWrap);
+                }
+
+                el.addEventListener("click", (e) => {
+                    e.stopPropagation();
+                    if (node.type === "folder") {
+                        const isOpen = el.classList.toggle("open");
+                        setChevron(el, isOpen);
+                    }
+                    selectNode(el, node).catch((err) => console.error(err));
+                });
+
+                return el;
+            }
+
+            async function initTree() {
+                const res = await fetch("SKILL.md");
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const entries = parseSkillIndex(await res.text());
+                const tree = buildTree(entries);
+                if (!tree) throw new Error("SKILL.md não contém nenhuma linha de árvore válida");
+                document.getElementById("tree").appendChild(createNode(tree));
+
+                const saved = loadState();
+                restoreFooter(saved.footerState, saved.footerHeight);
+                if (saved.selectedPath) restoreSelection(saved.selectedPath);
+            }
+
+            // Limpa a altura inline deixada por um drag anterior, devolvendo o controle às classes CSS
+            function clearFooterDragHeight() {
+                if (typeof animFrame !== "undefined") cancelAnimationFrame(animFrame);
+                footerEl.style.height = "";
+                document.body.style.paddingBottom = "";
+            }
+
+            footerToggle.addEventListener("click", () => {
+                clearFooterDragHeight();
+                const collapsed = footerEl.classList.toggle("collapsed");
+                document.body.classList.toggle("footer-collapsed", collapsed);
+                footerToggle.textContent = collapsed ? "▴" : "▾";
+                footerToggle.setAttribute("aria-expanded", String(!collapsed));
+                footerToggle.title = collapsed ? "Expandir rodapé" : "Minimizar rodapé";
+
+                if (collapsed) {
+                    footerEl.classList.remove("fullscreen");
+                    footerFullscreen.setAttribute("aria-pressed", "false");
+                    footerFullscreen.textContent = "⛶";
+                    footerFullscreen.title = "Expandir para tela cheia";
+                }
+
+                saveState({
+                    footerState: collapsed ? "collapsed" : "default",
+                    footerHeight: null,
+                });
+            });
+
+            // Arrastar o cabeçalho do rodapé (touch) ajusta sua altura — mirrors var(--footer-h-collapsed)
+            const footerHeader = footerEl.querySelector(".context-footer__header");
+            const FOOTER_MIN_HEIGHT = 44;
+            const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+
+            // ── Deslizamento com inércia (animação única + easing) ───────────
+            // Abordagem: ao soltar, projetamos um destino a partir da velocidade
+            // e animamos do ponto atual até esse destino numa ÚNICA tween com
+            // easeOutQuart (curva que espelha o momentum nativo do iOS).
+            let dragState = null;
+            let animFrame = null;
+            let liveH = 0; // altura rastreada em JS (fonte da verdade)
+
+            const H_COLLAPSED = FOOTER_MIN_HEIGHT;
+            // Altura máxima = área visível ATUAL (recalculada a cada uso,
+            // pois a barra do navegador mobile muda window.innerHeight)
+            const getMaxHeight = () => window.innerHeight;
+            const _rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+            const _rawH = getComputedStyle(document.documentElement).getPropertyValue("--footer-h").trim();
+            const H_DEFAULT = parseFloat(_rawH) * _rem || 152;
+
+            // Pontos de ancoragem para snap (máximo recalculado on demand)
+            const getSnapPoints = () => [H_COLLAPSED, H_DEFAULT, getMaxHeight()];
+
+            // Acima deste limiar (px/ms) o gesto é um "flick" → aplica momentum/snap.
+            // Abaixo, é ajuste fino → o rodapé fica exatamente onde o dedo soltou.
+            const FLICK_THRESHOLD = 0.35;
+
+            // easeOutQuart — desaceleração natural, igual ao scroll nativo
+            const easeOutQuart = (t) => 1 - Math.pow(1 - t, 4);
+
+            function applyHeight(h) {
+                liveH = h;
+                footerEl.style.height = `${h}px`;
+                document.body.style.paddingBottom = `${h}px`;
+            }
+
+            function commitState(h) {
+                footerEl.classList.remove("dragging");
+                const collapsed = h <= H_COLLAPSED + 2;
+                const fullscreen = h >= getMaxHeight() - 2;
+
+                footerEl.classList.toggle("collapsed", collapsed);
+                document.body.classList.toggle("footer-collapsed", collapsed);
+                footerEl.classList.toggle("fullscreen", fullscreen);
+
+                footerToggle.textContent = collapsed ? "▴" : "▾";
+                footerToggle.setAttribute("aria-expanded", String(!collapsed));
+                footerToggle.title = collapsed ? "Expandir rodapé" : "Minimizar rodapé";
+
+                footerFullscreen.setAttribute("aria-pressed", String(fullscreen));
+                footerFullscreen.textContent = fullscreen ? "✕" : "⛶";
+                footerFullscreen.title = fullscreen ? "Sair da tela cheia" : "Expandir para tela cheia";
+
+                // Persiste estado semântico para sobreviver a reload
+                if (collapsed) {
+                    saveState({ footerState: "collapsed", footerHeight: null });
+                } else if (fullscreen) {
+                    saveState({ footerState: "fullscreen", footerHeight: null });
+                } else {
+                    saveState({ footerState: "custom", footerHeight: Math.round(h) });
+                }
+            }
+
+            // Anima de liveH até targetH em UMA tween suave e contínua.
+            // duration é proporcional à distância, com teto, para velocidade uniforme.
+            function animateTo(targetH) {
+                cancelAnimationFrame(animFrame);
+                const fromH = liveH;
+                const distance = targetH - fromH;
+                if (Math.abs(distance) < 1) {
+                    applyHeight(targetH);
+                    commitState(targetH);
+                    return;
+                }
+                // ~1.1ms por pixel, entre 220ms e 620ms — sensação consistente
+                const duration = Math.min(620, Math.max(220, Math.abs(distance) * 1.1));
+                const startTime = performance.now();
+
+                function frame(now) {
+                    const elapsed = now - startTime;
+                    const t = Math.min(elapsed / duration, 1);
+                    const eased = easeOutQuart(t);
+                    applyHeight(fromH + distance * eased);
+
+                    if (t < 1) {
+                        animFrame = requestAnimationFrame(frame);
+                    } else {
+                        applyHeight(targetH);
+                        commitState(targetH);
+                    }
+                }
+                animFrame = requestAnimationFrame(frame);
+            }
+
+            // Projeta onde o footer "iria parar" pela inércia e escolhe o ponto
+            // de ancoragem mais próximo dessa projeção.
+            function resolveTarget(currentH, velocity) {
+                // Projeção: velocidade (px/ms) define quanto ainda andaria.
+                // Fator 120 ~ aproxima o deslocamento de um momentum natural.
+                const projected = currentH + velocity * 120;
+
+                const points = getSnapPoints();
+                let best = points[0];
+                let bestDist = Infinity;
+                for (const point of points) {
+                    const d = Math.abs(projected - point);
+                    if (d < bestDist) {
+                        bestDist = d;
+                        best = point;
+                    }
+                }
+                return best;
+            }
+
+            footerHeader.addEventListener(
+                "touchstart",
+                (e) => {
+                    cancelAnimationFrame(animFrame);
+                    liveH = footerEl.getBoundingClientRect().height; // lê DOM 1x
+                    const touch = e.touches[0];
+                    dragState = {
+                        startY: touch.clientY,
+                        startH: liveH,
+                        lastY: touch.clientY,
+                        lastTime: performance.now(),
+                        velocity: 0, // px/ms (positivo = footer crescendo)
+                    };
+                    footerEl.classList.remove("collapsed", "fullscreen");
+                    footerEl.classList.add("dragging"); // suprime transition CSS
+                    document.body.classList.remove("footer-collapsed");
+                },
+                { passive: true },
+            );
+
+            footerHeader.addEventListener(
+                "touchmove",
+                (e) => {
+                    if (!dragState) return;
+                    const touch = e.touches[0];
+                    const now = performance.now();
+                    const dt = Math.max(now - dragState.lastTime, 1);
+                    const dy = dragState.lastY - touch.clientY; // dedo sobe → +
+
+                    // Velocidade suavizada (média móvel) p/ não captar ruído do último frame
+                    const instV = dy / dt;
+                    dragState.velocity = dragState.velocity * 0.7 + instV * 0.3;
+                    dragState.lastY = touch.clientY;
+                    dragState.lastTime = now;
+
+                    const newH = clamp(dragState.startH + (dragState.startY - touch.clientY), H_COLLAPSED, getMaxHeight());
+                    applyHeight(newH);
+                    e.preventDefault();
+                },
+                { passive: false },
+            );
+
+            function endFooterDrag() {
+                if (!dragState) return;
+                const velocity = dragState.velocity; // px/ms
+                const currentH = liveH;
+                dragState = null;
+
+                if (Math.abs(velocity) >= FLICK_THRESHOLD) {
+                    // Flick: aplica momentum e ancora num ponto de snap
+                    animateTo(resolveTarget(currentH, velocity));
+                } else {
+                    // Ajuste fino: mantém a altura escolhida pelo dedo,
+                    // só fecha se o usuário praticamente colapsou o rodapé.
+                    if (currentH <= H_COLLAPSED + 8) {
+                        animateTo(H_COLLAPSED);
+                    } else {
+                        commitState(currentH); // fica exatamente onde soltou
+                    }
+                }
+            }
+
+            footerHeader.addEventListener("touchend", endFooterDrag);
+            footerHeader.addEventListener("touchcancel", endFooterDrag);
+
+            footerFullscreen.addEventListener("click", () => {
+                clearFooterDragHeight();
+                const isFullscreen = footerEl.classList.toggle("fullscreen");
+
+                if (isFullscreen) {
+                    footerEl.classList.remove("collapsed");
+                    document.body.classList.remove("footer-collapsed");
+                    footerToggle.textContent = "▾";
+                    footerToggle.setAttribute("aria-expanded", "true");
+                    footerToggle.title = "Minimizar rodapé";
+                }
+
+                footerFullscreen.setAttribute("aria-pressed", String(isFullscreen));
+                footerFullscreen.textContent = isFullscreen ? "✕" : "⛶";
+                footerFullscreen.title = isFullscreen ? "Sair da tela cheia" : "Expandir para tela cheia";
+
+                saveState({
+                    footerState: isFullscreen ? "fullscreen" : "default",
+                    footerHeight: null,
+                });
+            });
+
+            // ── Restauração do estado salvo ──────────────────────────────────
+            // Reaplica altura do rodapé e item selecionado após um (re)load.
+            function restoreFooter(state, height) {
+                clearFooterDragHeight();
+                footerEl.classList.remove("collapsed", "fullscreen");
+                document.body.classList.remove("footer-collapsed");
+
+                if (state === "collapsed") {
+                    footerEl.classList.add("collapsed");
+                    document.body.classList.add("footer-collapsed");
+                    footerToggle.textContent = "▴";
+                    footerToggle.setAttribute("aria-expanded", "false");
+                    footerToggle.title = "Expandir rodapé";
+                } else if (state === "fullscreen") {
+                    footerEl.classList.add("fullscreen");
+                    footerFullscreen.setAttribute("aria-pressed", "true");
+                    footerFullscreen.textContent = "✕";
+                    footerFullscreen.title = "Sair da tela cheia";
+                    footerToggle.textContent = "▾";
+                    footerToggle.setAttribute("aria-expanded", "true");
+                    footerToggle.title = "Minimizar rodapé";
+                } else if (state === "custom" && typeof height === "number") {
+                    // Restaura altura livre, limitando à área visível atual.
+                    // Classe "dragging" suprime a transition para não animar no load.
+                    const h = clamp(height, H_COLLAPSED, getMaxHeight());
+                    footerEl.classList.add("dragging");
+                    applyHeight(h);
+                    void footerEl.offsetHeight; // força reflow com a altura já aplicada
+                    commitState(h); // remove "dragging" e fixa estado
+                }
+                // "default" ou ausente → mantém a altura padrão do CSS
+            }
+
+            function restoreSelection(path) {
+                const entry = nodeIndex.get(path);
+                if (!entry) return;
+
+                // Abre todas as pastas ancestrais para o item ficar visível
+                const parts = path.split("/");
+                let acc = "";
+                for (let i = 0; i < parts.length - 1; i++) {
+                    acc = acc ? `${acc}/${parts[i]}` : parts[i];
+                    const ancestor = nodeIndex.get(acc);
+                    if (ancestor && ancestor.type === "folder") {
+                        ancestor.el.classList.add("open");
+                        setChevron(ancestor.el, true);
+                    }
+                }
+
+                selectNode(entry.el, entry).catch((err) => console.error(err));
+                entry.el.scrollIntoView({ block: "center", behavior: "auto" });
+            }
+
+            initTree().catch((err) => {
+                console.error(err);
+                document.getElementById("tree").textContent = "Não foi possível carregar a árvore do projeto.";
+            });
+        </script>
+    </body>
+</html>

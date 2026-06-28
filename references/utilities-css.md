@@ -6,7 +6,7 @@ Servem para ajustes rápidos que não justificam um arquivo CSS de componente pr
 }
 
 .mt-md {
-    margin-top: var(--spacing-md); /* usa token, nunca um valor solto */
+    margin-top: var(--space-4); /* usa token, nunca um valor solto */
 }
 
 .sr-only {

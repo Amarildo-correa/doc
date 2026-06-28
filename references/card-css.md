@@ -1,15 +1,15 @@
-O HTML do card é gerado por 'components/card.js', mas este arquivo é quem decide sua aparência: bordas, espaçamento interno e a sombra que dá sensação de profundidade. Separar estrutura (JS) de aparência (CSS) é o que permite redesenhar o card inteiro sem tocar em uma linha de JavaScript.
+O HTML do card é gerado por 'components/card.js', mas este arquivo é quem decide sua aparência: borda e espaçamento interno — a separação visual entre cards vem inteiramente do grid de bordas de 1px, sem fundo ou sombra própria. Separar estrutura (JS) de aparência (CSS) é o que permite redesenhar o card inteiro sem tocar em uma linha de JavaScript.
 
 ```css
 .card {
-    background: var(--color-panel);
+    /* sem background-color própria — herda --color-bg do body */
     border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    padding: var(--spacing-md);
+    /* cantos sempre retos — nunca border-radius */
+    padding: var(--space-4);
     cursor: pointer;
     /* transition só na propriedade que muda no hover: evita custo de
        recalcular outras propriedades a cada frame da animação */
-    transition: border-color 0.15s ease;
+    transition: border-color var(--transition-fast);
 }
 
 .card:hover {
@@ -18,7 +18,7 @@ O HTML do card é gerado por 'components/card.js', mas este arquivo é quem deci
 
 .card__title {
     margin: 0;
-    font-weight: 600;
+    font-weight: var(--font-bold);
 }
 ```
 

@@ -20,6 +20,35 @@ export async function getPromptById(id) {
     if (!res.ok) throw new Error(`Prompt ${id} não encontrado`);
     return res.json();
 }
+
+export async function createPrompt(data) {
+    const res = await fetch(`${BASE_URL}/prompts`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error("Falha ao criar prompt");
+    return res.json(); // JSON Server devolve o objeto criado com o id gerado
+}
+
+export async function updatePrompt(id, data) {
+    // PATCH atualiza só os campos enviados; PUT substituiria o objeto inteiro
+    const res = await fetch(`${BASE_URL}/prompts/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(`Falha ao atualizar prompt ${id}`);
+    return res.json();
+}
+
+export async function deletePrompt(id) {
+    const res = await fetch(`${BASE_URL}/prompts/${id}`, {
+        method: "DELETE",
+    });
+    if (!res.ok) throw new Error(`Falha ao excluir prompt ${id}`);
+    // DELETE bem-sucedido retorna 200 com {} — não há dado útil para devolver
+}
 ```
 
 ## Por que centralizar fetch em um único módulo
@@ -41,6 +70,24 @@ Decidir cache de requisições dentro de 'api.js' acoplaria essa camada a decis�
 ## Segurança
 
 Por usar caminho relativo ('/api', não uma URL absoluta com domínio fixo), este código nunca expõe acidentalmente um endpoint de outro ambiente (ex.: produção sendo chamada a partir de localhost) — o navegador resolve '/api' sempre contra o domínio atual.
+
+## CRUD completo — decisões de design
+
+### Por que PATCH e não PUT em updatePrompt
+
+PUT substitui o objeto inteiro — se o formulário de edição não enviar todos os campos (ex.: omitir 'createdAt'), o JSON Server apagaria esses campos do registro. PATCH faz merge: só os campos presentes no body são tocados, os demais permanecem intactos. Para formulários que editam campos isolados isso é mais seguro.
+
+### Por que createPrompt devolve o objeto criado
+
+O JSON Server atribui o 'id' automaticamente e devolve o registro completo no corpo da resposta do POST. A view que chama 'createPrompt()' pode usar esse retorno para, por exemplo, redirecionar imediatamente ao detalhe do novo prompt sem precisar fazer um segundo GET.
+
+### Por que deletePrompt não tem return
+
+Um DELETE bem-sucedido retorna HTTP 200 com body '{}' — não há dado útil. A view confirma o sucesso pelo fato de a Promise ter resolvido sem lançar erro, e pode então remover o item da lista localmente sem refazer o GET completo.
+
+### Padrão comum às quatro operações
+
+Todas seguem o mesmo contrato: (1) faz o fetch com o método correto, (2) verifica 'res.ok' e lança se falhou, (3) devolve o JSON ou nada. Esse padrão uniforme facilita escrever um wrapper genérico de tratamento de erro na view.
 
 ## Alternativa e trade-off
 
