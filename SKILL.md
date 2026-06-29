@@ -20,6 +20,9 @@ acrescente uma linha abaixo com o `path` completo (incluindo a raiz
 - `promptdown-ui-v3/.gitignore` (file) → `doc/references/dot-gitignore.md` — Lista de arquivos/pastas ignorados pelo git, incluindo artefatos gerados por agentes e credenciais.
 - `promptdown-ui-v3/plugins` (folder) → `doc/references/plugins.md` — Fonte única de verdade de skills/rules/hooks agnósticos de harness, gerada para cada agente via Makefile.
 - `promptdown-ui-v3/plugins/promptdown-helpers` (folder) → `doc/references/plugins-promptdown-helpers.md` — Exemplo concreto de plugin-fonte, com skills/agents/commands/rules.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules/code-style.md` (file) → `doc/references/plugins-rules-code-style.md` — Fonte canônica da rule de estilo.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules/testing.md` (file) → `doc/references/plugins-rules-testing.md` — Fonte canônica da rule de testes.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules/security.md` (file) → `doc/references/plugins-rules-security.md` — Fonte canônica dos boundaries de segurança.
 - `promptdown-ui-v3/.claude` (folder) → `doc/references/dot-claude.md` — Configuração do Claude Code — ignorada por todos os outros agentes.
 - `promptdown-ui-v3/.claude/settings.json` (file) → `doc/references/claude-settings-json.md` — Configuração de MCP servers e hooks específicos do Claude Code.
 - `promptdown-ui-v3/.claude/agents` (folder) → `doc/references/claude-agents.md` — Subagentes gerados a partir de `plugins/`.
@@ -28,6 +31,10 @@ acrescente uma linha abaixo com o `path` completo (incluindo a raiz
 - `promptdown-ui-v3/.claude/commands/deploy-staging.md` (file) → `doc/references/claude-commands-deploy-staging.md` — Exemplo concreto de slash command: `/deploy-staging`.
 - `promptdown-ui-v3/.claude/skills` (folder) → `doc/references/claude-skills.md` — Skills auto-descobertas via `SKILL.md`.
 - `promptdown-ui-v3/.claude/skills/tavily-search/SKILL.md` (file) → `doc/references/claude-skills-tavily-search.md` — Exemplo real de skill instalada nesta máquina (busca web via Tavily CLI).
+- `promptdown-ui-v3/.claude/rules` (folder) → `doc/references/claude-rules.md` — Artefato gerado pelo Makefile; nunca editar diretamente.
+- `promptdown-ui-v3/.claude/rules/code-style.md` (file) → `doc/references/claude-rules-code-style.md` — Convenções JS/CSS geradas de plugins/.
+- `promptdown-ui-v3/.claude/rules/testing.md` (file) → `doc/references/claude-rules-testing.md` — Regras Vitest geradas de plugins/.
+- `promptdown-ui-v3/.claude/rules/security.md` (file) → `doc/references/claude-rules-security.md` — Boundaries de segurança gerados de plugins/.
 - `promptdown-ui-v3/.codex` (folder) → `doc/references/dot-codex.md` — Configuração do Codex CLI — ignorada por todos os outros agentes.
 - `promptdown-ui-v3/.codex/config.toml` (file) → `doc/references/codex-config-toml.md` — Exemplo concreto de configuração de papéis de agente do Codex CLI.
 - `promptdown-ui-v3/.codex/agents` (folder) → `doc/references/codex-agents.md` — Papéis de agente configurados em `config.toml` (não arquivos `.toml` por agente — ver correção no arquivo).
@@ -106,8 +113,10 @@ acrescente uma linha abaixo com o `path` completo (incluindo a raiz
 - `promptdown-ui-v3/.specs/features/repo-scaffolding/tasks.md` (file) → `doc/references/specs-features-repo-scaffolding-tasks.md` — Breakdown em tasks paralelas, uma por subsistema do repositório.
 - `promptdown-ui-v3/scripts` (folder) → `doc/references/scripts.md` — Scripts auxiliares de operação — rodam na infraestrutura, não fazem parte do build da aplicação.
 - `promptdown-ui-v3/scripts/backup-db.sh` (file) → `doc/references/backup-db-sh.md` — Backup diário e automático do database.json — a única fonte de dados 'reais' do projeto mock.
+- `promptdown-ui-v3/scripts/generate-harness.mjs` (file) → `doc/references/generate-harness-mjs.md` — Lê plugins/ e escreve artefatos no destino correto de cada harness.
 - `promptdown-ui-v3/tests` (folder) → `doc/references/tests.md` — Testes automatizados do projeto — a rede de segurança que bloqueia deploys quebrados.
 - `promptdown-ui-v3/tests/unit` (folder) → `doc/references/unit.md` — Testes unitários escritos com Vitest (describe/it/expect).
 - `promptdown-ui-v3/docker-compose.yml` (file) → `doc/references/docker-compose-yml.md` — Orquestra os dois containers da aplicação como um único sistema.
 - `promptdown-ui-v3/Dockerfile.frontend` (file) → `doc/references/dockerfile-frontend.md` — Receita da imagem Docker do Nginx que serve o frontend estático.
 - `promptdown-ui-v3/Dockerfile.api` (file) → `doc/references/dockerfile-api.md` — Receita da imagem Docker Node.js que executa o JSON Server.
+- `promptdown-ui-v3/Makefile` (file) → `doc/references/makefile.md` — Orquestra geração de harnesses a partir de plugins/ via make generate-all.
