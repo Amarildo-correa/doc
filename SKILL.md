@@ -19,7 +19,17 @@ acrescente uma linha abaixo com o `path` completo (incluindo a raiz
 - `promptdown-ui-v3/.mcp.json` (file) → `doc/references/dot-mcp-json.md` — Configuração de MCP servers compartilhada, lida diretamente pelo Claude Code.
 - `promptdown-ui-v3/.gitignore` (file) → `doc/references/dot-gitignore.md` — Lista de arquivos/pastas ignorados pelo git, incluindo artefatos gerados por agentes e credenciais.
 - `promptdown-ui-v3/plugins` (folder) → `doc/references/plugins.md` — Fonte única de verdade de skills/rules/hooks agnósticos de harness, gerada para cada agente via Makefile.
-- `promptdown-ui-v3/plugins/promptdown-helpers` (folder) → `doc/references/plugins-promptdown-helpers.md` — Exemplo concreto de plugin-fonte, com skills/agents/commands/rules.
+- `promptdown-ui-v3/plugins/promptdown-helpers` (folder) → `doc/references/plugins-promptdown-helpers.md` — Plugin-fonte do projeto; escrito uma vez, gerado para todos os harnesses via Makefile.
+- `promptdown-ui-v3/plugins/promptdown-helpers/plugin.json` (file) → `doc/references/plugins-promptdown-helpers-plugin-json.md` — Marker obrigatório de plugin agnóstico.
+- `promptdown-ui-v3/plugins/promptdown-helpers/.claude-plugin` (folder) → `doc/references/plugins-promptdown-helpers-claude-plugin-json.md` — Marker específico do Claude Code.
+- `promptdown-ui-v3/plugins/promptdown-helpers/.claude-plugin/plugin.json` (file) → `doc/references/plugins-promptdown-helpers-claude-plugin-json.md` — Habilita instalação via marketplace do Claude Code.
+- `promptdown-ui-v3/plugins/promptdown-helpers/skills` (folder) → `doc/references/plugins-skills-format-prompt-card.md` — Skills do plugin geradas para .claude/skills/ e .codex/skills/.
+- `promptdown-ui-v3/plugins/promptdown-helpers/skills/format-prompt-card` (folder) → `doc/references/plugins-skills-format-prompt-card.md` — Skill que formata dados de prompt no padrão de card.
+- `promptdown-ui-v3/plugins/promptdown-helpers/skills/format-prompt-card/SKILL.md` (file) → `doc/references/plugins-skills-format-prompt-card-skill-md.md` — Definição da skill com nome e descrição.
+- `promptdown-ui-v3/plugins/promptdown-helpers/skills/format-prompt-card/references` (folder) → `doc/references/plugins-skills-format-prompt-card-style-guide-md.md` — Documentação de apoio da skill.
+- `promptdown-ui-v3/plugins/promptdown-helpers/skills/format-prompt-card/references/style-guide.md` (file) → `doc/references/plugins-skills-format-prompt-card-style-guide-md.md` — Contrato de dados e regras de formatação do card.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules` (folder) → `doc/references/plugins.md` — Rules do plugin; fontes canônicas geradas para todos os harnesses.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules/card-naming.md` (file) → `doc/references/plugins-rules-card-naming.md` — Fonte canônica da rule de nomenclatura de cards.
 - `promptdown-ui-v3/plugins/promptdown-helpers/rules/code-style.md` (file) → `doc/references/plugins-rules-code-style.md` — Fonte canônica da rule de estilo.
 - `promptdown-ui-v3/plugins/promptdown-helpers/rules/testing.md` (file) → `doc/references/plugins-rules-testing.md` — Fonte canônica da rule de testes.
 - `promptdown-ui-v3/plugins/promptdown-helpers/rules/security.md` (file) → `doc/references/plugins-rules-security.md` — Fonte canônica dos boundaries de segurança.
