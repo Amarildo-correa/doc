@@ -90,6 +90,7 @@ T1 ────┼→ T6  (.agents/)
 ### T3: Scaffold de `.claude/` [P]
 
 **What**: Criar `.claude/settings.json`, `.claude/agents/code-reviewer.md`, `.claude/commands/deploy-staging.md`, `.claude/skills/tavily-search/SKILL.md` (+ pastas vazias com `.gitkeep` onde não há exemplo).
+`.claude/rules/.gitkeep` — pasta rastreável no git antes da primeira execução de `make generate`.
 **Where**: `.claude/`
 **Depends on**: T1
 **Reuses**: `claude-settings-json.md`, `claude-agents-code-reviewer.md`, `claude-commands-deploy-staging.md`, `claude-skills-tavily-search.md`
@@ -100,6 +101,7 @@ T1 ────┼→ T6  (.agents/)
 **Done when**:
 - [ ] Todos os arquivos-exemplo de `.claude/` existem com o conteúdo documentado.
 - [ ] Pastas sem exemplo têm `.gitkeep`.
+- [ ] `.claude/rules/.gitkeep` existe.
 
 **Tests**: none
 **Gate**: none

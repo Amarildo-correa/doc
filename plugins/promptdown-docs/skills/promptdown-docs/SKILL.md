@@ -43,6 +43,9 @@ dois níveis de detalhe para uso eficiente do contexto.
 - `promptdown-ui-v3/.gitignore` (file) → `references/dot-gitignore.md` — Arquivos ignorados pelo git.
 - `promptdown-ui-v3/plugins` (folder) → `references/plugins.md` — Fonte única de verdade de skills/rules/hooks.
 - `promptdown-ui-v3/plugins/promptdown-helpers` (folder) → `references/plugins-promptdown-helpers.md` — Exemplo de plugin-fonte.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules/code-style.md` (file) → `references/plugins-rules-code-style.md` — Fonte canônica da rule de estilo.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules/testing.md` (file) → `references/plugins-rules-testing.md` — Fonte canônica da rule de testes.
+- `promptdown-ui-v3/plugins/promptdown-helpers/rules/security.md` (file) → `references/plugins-rules-security.md` — Fonte canônica dos boundaries de segurança.
 - `promptdown-ui-v3/.claude` (folder) → `references/dot-claude.md` — Configuração do Claude Code.
 - `promptdown-ui-v3/.claude/settings.json` (file) → `references/claude-settings-json.md` — MCP servers e hooks do Claude Code.
 - `promptdown-ui-v3/.claude/agents` (folder) → `references/claude-agents.md` — Subagentes gerados de `plugins/`.
@@ -51,6 +54,10 @@ dois níveis de detalhe para uso eficiente do contexto.
 - `promptdown-ui-v3/.claude/commands/deploy-staging.md` (file) → `references/claude-commands-deploy-staging.md` — Slash command `/deploy-staging`.
 - `promptdown-ui-v3/.claude/skills` (folder) → `references/claude-skills.md` — Skills auto-descobertas via `SKILL.md`.
 - `promptdown-ui-v3/.claude/skills/tavily-search/SKILL.md` (file) → `references/claude-skills-tavily-search.md` — Skill Tavily instalada.
+- `promptdown-ui-v3/.claude/rules` (folder) → `references/claude-rules.md` — Artefato gerado pelo Makefile; nunca editar diretamente.
+- `promptdown-ui-v3/.claude/rules/code-style.md` (file) → `references/claude-rules-code-style.md` — Convenções JS/CSS geradas de plugins/.
+- `promptdown-ui-v3/.claude/rules/testing.md` (file) → `references/claude-rules-testing.md` — Regras Vitest geradas de plugins/.
+- `promptdown-ui-v3/.claude/rules/security.md` (file) → `references/claude-rules-security.md` — Boundaries de segurança gerados de plugins/.
 - `promptdown-ui-v3/.codex` (folder) → `references/dot-codex.md` — Configuração do Codex CLI.
 - `promptdown-ui-v3/.codex/config.toml` (file) → `references/codex-config-toml.md` — Configuração de papéis do Codex CLI.
 - `promptdown-ui-v3/.codex/agents` (folder) → `references/codex-agents.md` — Papéis de agente do Codex.
@@ -128,11 +135,13 @@ dois níveis de detalhe para uso eficiente do contexto.
 - `promptdown-ui-v3/.specs/features/repo-scaffolding/tasks.md` (file) → `references/specs-features-repo-scaffolding-tasks.md` — Tasks paralelas.
 - `promptdown-ui-v3/scripts` (folder) → `references/scripts.md` — Scripts auxiliares.
 - `promptdown-ui-v3/scripts/backup-db.sh` (file) → `references/backup-db-sh.md` — Backup do database.json.
+- `promptdown-ui-v3/scripts/generate-harness.mjs` (file) → `references/generate-harness-mjs.md` — Lê plugins/ e escreve artefatos no destino correto de cada harness.
 - `promptdown-ui-v3/tests` (folder) → `references/tests.md` — Testes automatizados.
 - `promptdown-ui-v3/tests/unit` (folder) → `references/unit.md` — Testes unitários Vitest.
 - `promptdown-ui-v3/docker-compose.yml` (file) → `references/docker-compose-yml.md` — Orquestra os dois containers.
 - `promptdown-ui-v3/Dockerfile.frontend` (file) → `references/dockerfile-frontend.md` — Imagem Nginx do frontend.
 - `promptdown-ui-v3/Dockerfile.api` (file) → `references/dockerfile-api.md` — Imagem Node.js da API.
+- `promptdown-ui-v3/Makefile` (file) → `references/makefile.md` — Orquestra geração de harnesses a partir de plugins/ via make generate-all.
 
 ---
 
