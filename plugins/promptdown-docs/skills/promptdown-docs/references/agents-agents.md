@@ -1,6 +1,6 @@
 `.agents/agents/` — pasta para definições de agentes/personas por projeto no Antigravity IDE.
 
-**Nota de confiabilidade**: a pesquisa oficial confirmou com clareza a existência de uma subpasta `agents/` dentro da estrutura de um **plugin** do Antigravity CLI (`agy`) — "Optional subagent definition templates", ao lado de `skills/`, `rules/`, `mcp_config.json` e `hooks.json`. Já uma pasta `.agents/agents/` solta no workspace (fora de um plugin), como descrita no guia genérico original, **não foi confirmada** como uma convenção documentada independente da IDE — o padrão mais robusto e citado pelos codelabs oficiais para "definir o time" de agentes é escrever personas direto em `AGENTS.md` (seção "Define the Team"), com Goals/Traits/Constraints por persona, e não uma pasta dedicada de arquivos por agente.
+**Nota de confiabilidade**: A pesquisa oficial confirmou com clareza a existência de uma subpasta `agents/` dentro da estrutura de um **plugin** do Antigravity CLI (`agy`) — "Optional subagent definition templates", ao lado de `skills/`, `rules/`, `mcp_config.json` e `hooks.json`. Já uma pasta `.agents/agents/` solta no workspace (fora de um plugin), como descrita no guia genérico original, **não foi confirmada** como uma convenção documentada independente da IDE — o padrão mais robusto e citado pelos codelabs oficiais para "definir o time" de agentes é escrever personas direto em `AGENTS.md` (seção "Define the Team"), com Goals/Traits/Constraints por persona, e não uma pasta dedicada de arquivos por agente.
 
 ## Padrão real observado (codelab oficial)
 
