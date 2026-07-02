@@ -1,14 +1,46 @@
 # Índice e árvore — Repo Tree Viewer
 
+Este repositório é um índice educativo de "aulas" sobre a estrutura de um
+projeto fictício (uma SPA vanilla de exemplo). Não contém código de
+aplicação — só Markdown.
+
 Este arquivo é a ÚNICA fonte de verdade da árvore de arquivos do projeto:
-cada linha descreve um nó (pasta ou arquivo) e a hierarquia é inferida
-pelos segmentos de cada `path`. O `summary` de cada linha é a descrição
-curta desse item. O conteúdo completo de cada "aula" continua em
+cada linha da seção "Itens" descreve um nó (pasta ou arquivo) e a hierarquia
+é inferida pelos segmentos de cada `path`. O `summary` de cada linha é a
+descrição curta desse item e já responde perguntas rápidas/superficiais sem
+precisar abrir mais nada. O conteúdo completo de cada "aula" continua em
 `doc/references/<slug>.md`.
 
-Para adicionar um novo item à árvore: crie o `.md` em `doc/references/` e
-acrescente uma linha abaixo com o `path` completo (incluindo a raiz
-`promptdown-ui-v3`), o tipo (`folder`/`file`) e o summary.
+## Como responder perguntas sobre o projeto
+
+Para qualquer pergunta sobre o que uma pasta ou arquivo do projeto fictício faz:
+
+1. Consulte primeiro a árvore em "Itens" — o `summary` de cada linha já
+   responde a maioria das perguntas.
+2. Se precisar do conteúdo completo (explicação detalhada, exemplos de
+   código, trade-offs), leia **apenas** o arquivo `references/<slug>.md`
+   correspondente ao item perguntado.
+3. Não há necessidade de ler todos os arquivos de `references/` de uma vez
+   — leia só o(s) relevante(s) para a pergunta feita.
+
+## Por que essa ordem
+
+Este arquivo tem poucas linhas e descreve a árvore inteira; cada arquivo em
+`references/` é pequeno e cobre um único item. Ler nessa ordem (índice →
+arquivo específico) evita carregar conteúdo irrelevante na janela de
+contexto.
+
+## Fonte única de verdade
+
+O conteúdo de cada aula existe em um único lugar: o arquivo `.md` listado
+abaixo. Não há duplicação do conteúdo em nenhum outro lugar deste
+repositório.
+
+## Como adicionar um novo item à árvore
+
+Crie o `.md` em `doc/references/` e acrescente uma linha abaixo com o `path`
+completo (incluindo a raiz `promptdown-ui-v3`), o tipo (`folder`/`file`) e o
+summary.
 
 ## Itens
 
