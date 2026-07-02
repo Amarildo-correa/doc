@@ -79,11 +79,12 @@ acrescente uma linha abaixo com o `path` completo (incluindo a raiz
 - `promptdown-ui-v3/api/middleware/logger.js` (file) → `doc/references/logger-js.md` — Middleware de log — registra método, caminho e duração de cada requisição recebida pela API mock.
 - `promptdown-ui-v3/api/middleware/request-delay.js` (file) → `doc/references/request-delay-js.md` — Atraso artificial de rede — simula latência para testar estados de loading da SPA.
 - `promptdown-ui-v3/api/openapi.yaml` (file) → `doc/references/openapi-yaml.md` — OpenAPI 3.0.3
-- `promptdown-ui-v3/public` (folder) → `doc/references/public.md` — Tudo dentro desta pasta é servido estaticamente pelo container Nginx — é literalmente o frontend em produção.
-- `promptdown-ui-v3/public/index.html` (file) → `doc/references/index-html.md` — Página HTML única da SPA — todo o resto é renderizado via JavaScript a partir dela.
+- `promptdown-ui-v3/public` (folder) → `doc/references/public.md` — Tudo dentro desta pasta é servido pelos Workers Assets do Cloudflare — não há mais container Nginx nesta arquitetura.
+- `promptdown-ui-v3/public/index.html` (file) → `doc/references/index-html.md` — Página HTML única da SPA — hidratada a partir do HTML já renderizado pelo Worker (SSR), não reconstruída do zero pelo JavaScript.
+- `promptdown-ui-v3/public/llms.txt` (file) → `doc/references/llms-txt.md` — Índice em Markdown para crawlers de LLM (GPTBot, ClaudeBot, PerplexityBot...).
 - `promptdown-ui-v3/public/js` (folder) → `doc/references/js.md` — Todo o código JavaScript da aplicação cliente.
 - `promptdown-ui-v3/public/js/app.js` (file) → `doc/references/app-js.md` — Entry point da SPA — o primeiro código a executar quando a página carrega.
-- `promptdown-ui-v3/public/js/router.js` (file) → `doc/references/router-js.md` — Implementa o roteamento client-side usando a History API do navegador.
+- `promptdown-ui-v3/public/js/router.js` (file) → `doc/references/router-js.md` — Roteamento client-side via History API; na carga inicial de cada rota, hidrata o HTML já renderizado pelo Worker em vez de reconstruí-lo do zero.
 - `promptdown-ui-v3/public/js/store.js` (file) → `doc/references/store-js.md` — Store global de estado da aplicação — Proxy + pub/sub em vez de objeto mutável simples.
 - `promptdown-ui-v3/public/js/api.js` (file) → `doc/references/api-js.md` — Camada única de comunicação HTTP entre a SPA e o backend.
 - `promptdown-ui-v3/public/js/lib` (folder) → `doc/references/lib.md` — Funções utilitárias puras — sem efeitos colaterais, sem DOM, sem dependência de estado global.
@@ -126,7 +127,8 @@ acrescente uma linha abaixo com o `path` completo (incluindo a raiz
 - `promptdown-ui-v3/scripts/generate-harness.mjs` (file) → `doc/references/generate-harness-mjs.md` — Lê plugins/ e escreve artefatos no destino correto de cada harness.
 - `promptdown-ui-v3/tests` (folder) → `doc/references/tests.md` — Testes automatizados do projeto — a rede de segurança que bloqueia deploys quebrados.
 - `promptdown-ui-v3/tests/unit` (folder) → `doc/references/unit.md` — Testes unitários escritos com Vitest (describe/it/expect).
-- `promptdown-ui-v3/docker-compose.yml` (file) → `doc/references/docker-compose-yml.md` — Orquestra os dois containers da aplicação como um único sistema.
-- `promptdown-ui-v3/Dockerfile.frontend` (file) → `doc/references/dockerfile-frontend.md` — Receita da imagem Docker do Nginx que serve o frontend estático.
+- `promptdown-ui-v3/docker-compose.yml` (file) → `doc/references/docker-compose-yml.md` — Orquestra só o container da API/DB na Vultr — sem serviço de frontend.
 - `promptdown-ui-v3/Dockerfile.api` (file) → `doc/references/dockerfile-api.md` — Receita da imagem Docker Node.js que executa o JSON Server.
+- `promptdown-ui-v3/worker.js` (file) → `doc/references/worker-js.md` — Cloudflare Worker único: serve a mesma rota com SSR para bots de SEO, Markdown para bots de LLM, e HTML + hidratação para humanos.
+- `promptdown-ui-v3/wrangler.toml` (file) → `doc/references/wrangler-toml.md` — Configuração do Worker (assets estáticos, variável API_URL por ambiente) — substitui Nginx local e em produção.
 - `promptdown-ui-v3/Makefile` (file) → `doc/references/makefile.md` — Orquestra geração de harnesses a partir de plugins/ via make generate-all.

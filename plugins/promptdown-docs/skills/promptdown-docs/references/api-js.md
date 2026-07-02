@@ -1,9 +1,10 @@
 Centraliza todas as chamadas 'fetch' apontando para uma BASE_URL configurável. É o único ponto a mudar quando o JSON Server for substituído por um backend real.
 
 ```js
-// "/api" é resolvido pelo proxy do Nginx (ver public.lesson) — o
-// navegador nunca precisa saber o hostname real do container json-server
-const BASE_URL = "/api";
+// Sem Nginx nesta arquitetura, não há mais um proxy same-origin para
+// "/api" — o navegador chama a API da Vultr diretamente por uma URL
+// absoluta, habilitada via CORS no server.js (ver server-js.md e api.md)
+const BASE_URL = "https://api.promptdown.com";
 
 export async function getPrompts() {
     const res = await fetch(`${BASE_URL}/prompts`);
@@ -53,7 +54,7 @@ export async function deletePrompt(id) {
 
 ## Por que centralizar fetch em um único módulo
 
-Se cada view chamasse 'fetch' diretamente, a URL base, o tratamento de erro e qualquer header comum (ex.: 'Authorization') estariam duplicados em N lugares. Centralizando em 'api.js', trocar o backend real significa editar este único arquivo — nenhuma view precisa saber que a URL mudou de '/api' para, digamos, 'https://api.promptdown.com/v2'.
+Se cada view chamasse 'fetch' diretamente, a URL base, o tratamento de erro e qualquer header comum (ex.: 'Authorization') estariam duplicados em N lugares. Centralizando em 'api.js', trocar o backend real significa editar este único arquivo — nenhuma view precisa saber que a URL mudou, por exemplo, de 'https://api.promptdown.com' para 'https://api.promptdown.com/v2'.
 
 ## Caso de uso real: troca de backend sem tocar nas views
 
@@ -69,7 +70,7 @@ Decidir cache de requisições dentro de 'api.js' acoplaria essa camada a decis�
 
 ## Segurança
 
-Por usar caminho relativo ('/api', não uma URL absoluta com domínio fixo), este código nunca expõe acidentalmente um endpoint de outro ambiente (ex.: produção sendo chamada a partir de localhost) — o navegador resolve '/api' sempre contra o domínio atual.
+Como o frontend (Cloudflare) e a API (Vultr) vivem em domínios diferentes, toda chamada é cross-origin — o `server.js` habilita CORS via `jsonServer.defaults()` (ver `server-js.md`) para permitir isso. Diferente do proxy same-origin que o Nginx fazia antes, `BASE_URL` precisa ser explicitamente diferente por ambiente (dev vs. produção), então evitar hardcode aqui é ainda mais importante — o valor deve vir de uma variável de build/ambiente, nunca de uma string fixa espalhada pelo código.
 
 ## CRUD completo — decisões de design
 

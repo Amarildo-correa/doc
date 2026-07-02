@@ -102,8 +102,9 @@ dois níveis de detalhe para uso eficiente do contexto.
 - `promptdown-ui-v3/api/middleware/logger.js` (file) → `references/logger-js.md` — Middleware de log.
 - `promptdown-ui-v3/api/middleware/request-delay.js` (file) → `references/request-delay-js.md` — Atraso artificial de rede.
 - `promptdown-ui-v3/api/openapi.yaml` (file) → `references/openapi-yaml.md` — OpenAPI 3.0.3.
-- `promptdown-ui-v3/public` (folder) → `references/public.md` — Frontend servido pelo Nginx.
-- `promptdown-ui-v3/public/index.html` (file) → `references/index-html.md` — HTML único da SPA.
+- `promptdown-ui-v3/public` (folder) → `references/public.md` — Frontend estático servido pelos Workers Assets do Cloudflare (sem Nginx).
+- `promptdown-ui-v3/public/index.html` (file) → `references/index-html.md` — HTML único da SPA, hidratado a partir do SSR do Worker.
+- `promptdown-ui-v3/public/llms.txt` (file) → `references/llms-txt.md` — Índice em Markdown para crawlers de LLM.
 - `promptdown-ui-v3/public/js` (folder) → `references/js.md` — Código JavaScript da aplicação.
 - `promptdown-ui-v3/public/js/app.js` (file) → `references/app-js.md` — Entry point da SPA.
 - `promptdown-ui-v3/public/js/router.js` (file) → `references/router-js.md` — Roteamento client-side.
@@ -148,9 +149,10 @@ dois níveis de detalhe para uso eficiente do contexto.
 - `promptdown-ui-v3/scripts/generate-harness.mjs` (file) → `references/generate-harness-mjs.md` — Lê plugins/ e escreve artefatos no destino correto de cada harness.
 - `promptdown-ui-v3/tests` (folder) → `references/tests.md` — Testes automatizados.
 - `promptdown-ui-v3/tests/unit` (folder) → `references/unit.md` — Testes unitários Vitest.
-- `promptdown-ui-v3/docker-compose.yml` (file) → `references/docker-compose-yml.md` — Orquestra os dois containers.
-- `promptdown-ui-v3/Dockerfile.frontend` (file) → `references/dockerfile-frontend.md` — Imagem Nginx do frontend.
+- `promptdown-ui-v3/docker-compose.yml` (file) → `references/docker-compose-yml.md` — Orquestra só a API/DB na Vultr (sem container de frontend).
 - `promptdown-ui-v3/Dockerfile.api` (file) → `references/dockerfile-api.md` — Imagem Node.js da API.
+- `promptdown-ui-v3/worker.js` (file) → `references/worker-js.md` — Cloudflare Worker: SSR para SEO, Markdown para LLM, hidratação para humanos, cache de edge — mesma rota, mesmo Worker.
+- `promptdown-ui-v3/wrangler.toml` (file) → `references/wrangler-toml.md` — Config do Worker: assets estáticos e variável API_URL por ambiente.
 - `promptdown-ui-v3/Makefile` (file) → `references/makefile.md` — Orquestra geração de harnesses a partir de plugins/ via make generate-all.
 
 ---
@@ -160,3 +162,4 @@ dois níveis de detalhe para uso eficiente do contexto.
 - **Design system completo** → `references/design-md.md`
 - **Guia multi-agente completo** → `references/repositorio-multi-agente.md`
 - **Servidor de desenvolvimento local** → `references/start-server.md`
+- **Arquitetura de hidratação, GEO e divisão Cloudflare/Vultr** → `references/worker-js.md`, `references/wrangler-toml.md`, `references/promptdown-ui-v3.md` (tabela de responsabilidades)

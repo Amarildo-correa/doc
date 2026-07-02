@@ -1,25 +1,21 @@
-O Dockerfile.frontend copia 'public/' para dentro da imagem Nginx. Como a SPA usa History API, o nginx.conf precisa de um fallback para que rotas internas não retornem 404 ao serem acessadas diretamente.
+Não existe mais um container Nginx nesta arquitetura: `public/` é servido pelos **Workers Assets** do Cloudflare (binding `[assets]` em `wrangler.toml`, ver `wrangler-toml.md`) — na edge global em produção, e via `wrangler dev` localmente. O `worker.js` (ver `worker-js.md`) é quem decide, por rota, se delega para `env.ASSETS.fetch(request)` (estáticos) ou renderiza SSR/hidratação/Markdown dinamicamente.
 
-```nginx
-location / {
-  root /usr/share/nginx/html;
-  try_files $uri $uri/ /index.html;  # fallback de SPA
-}
-
-location /api/ {
-  proxy_pass http://json-server:3001/api/;  # evita CORS
-}
+```js
+// dentro de worker.js — qualquer rota que não seja /prompts/:id
+// é servida diretamente pelos Workers Assets, sem lógica adicional
+if (!match) return env.ASSETS.fetch(request);
 ```
 
-## Por que 'try_files ... /index.html' é obrigatório aqui
+## Por que não há mais 'try_files' nem fallback de servidor
 
-Numa SPA com roteamento via History API, uma URL como '/prompts/42' não corresponde a nenhum arquivo físico — ela só faz sentido depois que 'router.js' a interpreta no navegador. Sem o fallback, recarregar a página nessa URL (ou compartilhar o link) resultaria em 404 do próprio Nginx, porque o arquivo '/prompts/42' literalmente não existe no disco. O fallback devolve sempre 'index.html', deixando o JavaScript decidir o que renderizar.
+Numa SPA com roteamento via History API, uma URL como '/prompts/42' não corresponde a nenhum arquivo físico. Com Nginx, isso exigia um `try_files ... /index.html` para evitar 404. Aqui o problema desaparece de outra forma: `/prompts/:id` é justamente a rota que o `worker.js` intercepta e renderiza com SSR (nunca delega para `env.ASSETS`), então ela sempre recebe uma resposta com conteúdo real — nunca um 404 nem um `index.html` genérico esperando o JavaScript decidir o que mostrar.
 
 ## Estrutura interna
 
 ```text
 public/
 ├── index.html   # único ponto de entrada HTML
+├── llms.txt     # índice para crawlers de LLM (ver llms-txt.md)
 ├── js/          # toda a lógica da aplicação
 └── css/         # toda a apresentação visual
 ```
@@ -30,6 +26,12 @@ Esta pasta representa a camada de apresentação pura — ela não sabe como os 
 
 ## Boas práticas e armadilhas comuns
 
-- Nunca referenciar caminhos absolutos do sistema de arquivos do host — tudo deve ser relativo à raiz servida pelo Nginx.
-- Evitar qualquer chamada de rede hardcoded para 'localhost:3001'; sempre passar pelo proxy '/api/' do próprio Nginx, que funciona tanto em desenvolvimento quanto em produção.
+- Nunca referenciar caminhos absolutos do sistema de arquivos do host — tudo deve ser relativo à raiz servida pelos Workers Assets.
+- O frontend hidratado (`public/js/api.js`) chama a API da Vultr por uma URL absoluta própria, habilitada via CORS — não há mais um proxy `/api/` no mesmo domínio (ver `api-js.md`).
 - Lembrar que qualquer arquivo colocado aqui é público — nunca commitar segredos, chaves ou configurações sensíveis dentro de 'public/'.
+
+## Fontes
+
+- `worker-js.md`
+- `wrangler-toml.md`
+- `llms-txt.md`

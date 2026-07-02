@@ -17,7 +17,7 @@ deve respeitar em toda sessão. Gerado de `plugins/promptdown-helpers/rules/secu
 ## Validação obrigatória
 
 - Todo input do usuário que chega à API deve ser validado antes de persistir.
-- Headers de segurança HTTP são responsabilidade do Nginx — não bypassar via código.
+- Headers de segurança HTTP são responsabilidade do `worker.js` (Cloudflare) — não bypassar via código.
 
 ## Ao encontrar secret exposto
 

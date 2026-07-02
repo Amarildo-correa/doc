@@ -50,10 +50,10 @@ T1 ────┼→ T6  (.agents/)
 
 ### T1: Scaffold da raiz do repositório
 
-**What**: Criar os arquivos de raiz documentados no `SKILL.md` que não pertencem a nenhum subsistema: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.mcp.json`, `.gitignore`, `docker-compose.yml`, `Dockerfile.frontend`, `Dockerfile.api`.
+**What**: Criar os arquivos de raiz documentados no `SKILL.md` que não pertencem a nenhum subsistema: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.mcp.json`, `.gitignore`, `docker-compose.yml`, `Dockerfile.api`, `worker.js`, `wrangler.toml`.
 **Where**: raiz do repositório novo.
 **Depends on**: None
-**Reuses**: conteúdo de `agents-md.md`, `claude-md.md`, `gemini-md.md`, `dot-mcp-json.md`, `dot-gitignore.md`, `docker-compose-yml.md`, `dockerfile-frontend.md`, `dockerfile-api.md` como placeholder/comentário inicial.
+**Reuses**: conteúdo de `agents-md.md`, `claude-md.md`, `gemini-md.md`, `dot-mcp-json.md`, `dot-gitignore.md`, `docker-compose-yml.md`, `dockerfile-api.md`, `worker-js.md`, `wrangler-toml.md` como placeholder/comentário inicial.
 **Requirement**: cobre a base para todas as demais (nenhum SCAFFOLD-XX específico — é pré-requisito estrutural)
 
 **Tools**:
@@ -61,7 +61,7 @@ T1 ────┼→ T6  (.agents/)
 - Skill: NONE
 
 **Done when**:
-- [ ] Os 8 arquivos de raiz existem.
+- [ ] Os 8 arquivos de raiz existem (não há mais `Dockerfile.frontend` — o frontend é servido pelo Worker/Workers Assets, não por um container Nginx na Vultr).
 - [ ] Cada um tem um comentário/placeholder apontando para seu `references/<slug>.md`.
 
 **Tests**: none
@@ -202,17 +202,17 @@ T1 ────┼→ T6  (.agents/)
 
 ### T9: Scaffold de `public/js` [P]
 
-**What**: Criar `public/js/{app,router,store,api}.js`, `public/js/lib/{truncate,format-date}.js`, `public/js/views/{home-view,prompt-list-view,prompt-detail-view}.js`, `public/js/components/{card,modal,toast,prompt-form}.js`, `public/index.html`.
+**What**: Criar `public/js/{app,router,store,api}.js`, `public/js/lib/{truncate,format-date}.js`, `public/js/views/{home-view,prompt-list-view,prompt-detail-view}.js`, `public/js/components/{card,modal,toast,prompt-form}.js`, `public/index.html`, `public/llms.txt`.
 **Where**: `public/`
 **Depends on**: T1
-**Reuses**: os `references/*-js.md` correspondentes a cada arquivo
+**Reuses**: os `references/*-js.md` correspondentes a cada arquivo, `llms-txt.md`
 **Requirement**: SCAFFOLD-01, SCAFFOLD-02, SCAFFOLD-03
 
 **Tools**: MCP: NONE / Skill: NONE
 
 **Done when**:
 - [ ] Todos os arquivos JS de `public/js/**` existem com placeholder `// TODO: implementar — ver doc/references/<slug>.md`.
-- [ ] `public/index.html` existe.
+- [ ] `public/index.html` e `public/llms.txt` existem.
 - [ ] Rodar a task de novo não sobrescreve nenhum arquivo já existente.
 
 **Tests**: none

@@ -35,7 +35,7 @@ O repositório `promptdown-ui-v3` ainda não existe — só a documentação/pla
 
 **Acceptance Criteria**:
 
-1. WHEN o scaffold é executado THEN o sistema SHALL criar `public/index.html`, `public/js/{app,router,store,api}.js`, `public/js/lib/{truncate,format-date}.js`, `public/js/views/{home-view,prompt-list-view,prompt-detail-view}.js`, `public/js/components/{card,modal,toast,prompt-form}.js` e `public/css/{tokens,base,layout,utilities}.css` + `public/css/components/{button,input,card,modal}.css`.
+1. WHEN o scaffold é executado THEN o sistema SHALL criar `public/index.html`, `public/llms.txt`, `public/js/{app,router,store,api}.js`, `public/js/lib/{truncate,format-date}.js`, `public/js/views/{home-view,prompt-list-view,prompt-detail-view}.js`, `public/js/components/{card,modal,toast,prompt-form}.js` e `public/css/{tokens,base,layout,utilities}.css` + `public/css/components/{button,input,card,modal}.css`.
 2. WHEN um arquivo já existe no destino THEN o sistema SHALL pular esse arquivo sem sobrescrever (idempotência — rodar o scaffold de novo não destrói trabalho já feito).
 3. WHEN um arquivo é criado pela primeira vez THEN o sistema SHALL inserir um comentário placeholder apontando para o `references/<slug>.md` correspondente (ex.: `// TODO: implementar — ver doc/references/app-js.md`).
 
@@ -75,13 +75,13 @@ O repositório `promptdown-ui-v3` ainda não existe — só a documentação/pla
 
 ### P3: Scaffold de infra (`scripts/`, `tests/`, Docker, CI)
 
-**User Story**: Como desenvolvedor, quero que `docker-compose.yml`, os `Dockerfile.*`, `scripts/backup-db.sh`, `tests/unit/` e `.github/workflows/deploy.yml` já existam como placeholders, para não esquecer de criá-los quando chegar a hora.
+**User Story**: Como desenvolvedor, quero que `docker-compose.yml`, `Dockerfile.api`, `worker.js`, `wrangler.toml`, `scripts/backup-db.sh`, `tests/unit/` e `.github/workflows/deploy.yml` já existam como placeholders, para não esquecer de criá-los quando chegar a hora.
 
 **Why P3**: Não bloqueia desenvolvimento local nem o uso dos agentes de IA — só organização para não esquecer peças de infraestrutura.
 
 **Acceptance Criteria**:
 
-1. WHEN o scaffold é executado THEN o sistema SHALL criar `docker-compose.yml`, `Dockerfile.frontend`, `Dockerfile.api`, `scripts/backup-db.sh`, `tests/unit/.gitkeep`, `.github/workflows/deploy.yml`.
+1. WHEN o scaffold é executado THEN o sistema SHALL criar `docker-compose.yml`, `Dockerfile.api`, `worker.js`, `wrangler.toml`, `scripts/backup-db.sh`, `tests/unit/.gitkeep`, `.github/workflows/deploy.yml`.
 
 ---
 

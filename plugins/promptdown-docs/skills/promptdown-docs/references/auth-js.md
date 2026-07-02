@@ -99,4 +99,5 @@ Header errado → 403 Forbidden
 
 `mock-token` é uma string fixa e pública — qualquer pessoa que leia
 o código-fonte consegue se autenticar. Para proteção real, substitua
-por JWT assinado ou Basic Auth no Nginx.
+por JWT assinado, validado diretamente pela API na Vultr (não há mais
+um Nginx na frente dela para fazer esse papel).
