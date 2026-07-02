@@ -118,9 +118,9 @@ acrescente uma linha abaixo com o `path` completo (incluindo a raiz
 - `promptdown-ui-v3/.specs/features` (folder) → `doc/references/specs-features.md` — Especificações por feature (`spec.md`, `design.md`, `tasks.md`), escritas para guiar desenvolvimento dirigido por agentes de IA.
 - `promptdown-ui-v3/.specs/features/prompt-search-filter` (folder) → `doc/references/specs-features-prompt-search-filter.md` — Exemplo concreto de feature: busca/filtro de prompts por título ou tag.
 - `promptdown-ui-v3/.specs/features/prompt-search-filter/spec.md` (file) → `doc/references/specs-features-prompt-search-filter-spec.md` — Spec da feature (user stories, critérios de aceite, requirement IDs).
-- `promptdown-ui-v3/.specs/features/repo-scaffolding` (folder) → `doc/references/specs-features-repo-scaffolding.md` — Exemplo concreto de feature Large: bootstrap de todo o repositório a partir do SKILL.md, só estrutura de pastas/arquivos.
+- `promptdown-ui-v3/.specs/features/repo-scaffolding` (folder) → `doc/references/specs-features-repo-scaffolding.md` — Exemplo concreto de feature Large: bootstrap de todo o repositório a partir do AGENTS.md, só estrutura de pastas/arquivos.
 - `promptdown-ui-v3/.specs/features/repo-scaffolding/spec.md` (file) → `doc/references/specs-features-repo-scaffolding-spec.md` — Spec da feature (user stories por subsistema, critérios de aceite, requirement IDs).
-- `promptdown-ui-v3/.specs/features/repo-scaffolding/design.md` (file) → `doc/references/specs-features-repo-scaffolding-design.md` — Arquitetura do gerador de scaffold (parser do SKILL.md → árvore real de arquivos).
+- `promptdown-ui-v3/.specs/features/repo-scaffolding/design.md` (file) → `doc/references/specs-features-repo-scaffolding-design.md` — Arquitetura do gerador de scaffold (parser do AGENTS.md → árvore real de arquivos).
 - `promptdown-ui-v3/.specs/features/repo-scaffolding/tasks.md` (file) → `doc/references/specs-features-repo-scaffolding-tasks.md` — Breakdown em tasks paralelas, uma por subsistema do repositório.
 - `promptdown-ui-v3/scripts` (folder) → `doc/references/scripts.md` — Scripts auxiliares de operação — rodam na infraestrutura, não fazem parte do build da aplicação.
 - `promptdown-ui-v3/scripts/backup-db.sh` (file) → `doc/references/backup-db-sh.md` — Backup diário e automático do database.json — a única fonte de dados 'reais' do projeto mock.

@@ -38,7 +38,7 @@ Os arquivos de referência educativa explicam o **porquê** das decisões arquit
 2. Componente novo?
    → Documentar estrutura, CSS e estados em DESIGN.md § 5.
    → Só então criar o arquivo em public/css/components/.
-   → Registrar no SKILL.md.
+   → Registrar no AGENTS.md.
 
 3. Padrão de layout novo?
    → Verificar se é caso do grid (§ 3) ou genuinamente novo.

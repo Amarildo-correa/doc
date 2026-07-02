@@ -14,7 +14,7 @@
 | Critério | `prompt-search-filter` (Medium) | `repo-scaffolding` (Large) |
 |---|---|---|
 | Decisão arquitetural nova | Nenhuma — reaproveita `store.js`/`router.js` como já documentados | Sim, ainda que pequena — precisa de um script gerador novo (`scaffold-from-skill.mjs`) e uma estratégia de placeholder |
-| Quantidade de componentes tocados | 1-2 (`prompt-list-view.js`, `store.js`) | ~12 subsistemas independentes (praticamente toda a árvore do `SKILL.md`) |
+| Quantidade de componentes tocados | 1-2 (`prompt-list-view.js`, `store.js`) | ~12 subsistemas independentes (praticamente toda a árvore do `AGENTS.md`) |
 | Precisa de Design formal? | Não — design inline durante Execute | Sim — arquitetura do gerador, reuso de código, estratégia de erro |
 | Precisa de Tasks formal? | Não — passos óbvios e poucos | Sim — 12 tasks, paralelizáveis, com validação de granularidade |
 

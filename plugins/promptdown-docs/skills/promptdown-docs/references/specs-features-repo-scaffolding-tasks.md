@@ -50,7 +50,7 @@ T1 ────┼→ T6  (.agents/)
 
 ### T1: Scaffold da raiz do repositório
 
-**What**: Criar os arquivos de raiz documentados no `SKILL.md` que não pertencem a nenhum subsistema: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.mcp.json`, `.gitignore`, `docker-compose.yml`, `Dockerfile.api`, `worker.js`, `wrangler.toml`.
+**What**: Criar os arquivos de raiz documentados no `AGENTS.md` (índice/árvore de `doc/`) que não pertencem a nenhum subsistema: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.mcp.json`, `.gitignore`, `docker-compose.yml`, `Dockerfile.api`, `worker.js`, `wrangler.toml`.
 **Where**: raiz do repositório novo.
 **Depends on**: None
 **Reuses**: conteúdo de `agents-md.md`, `claude-md.md`, `gemini-md.md`, `dot-mcp-json.md`, `dot-gitignore.md`, `docker-compose-yml.md`, `dockerfile-api.md`, `worker-js.md`, `wrangler-toml.md` como placeholder/comentário inicial.
@@ -281,7 +281,7 @@ T1 ────┼→ T6  (.agents/)
 
 | Task | Atômica? | Justificativa |
 |---|---|---|
-| T1–T12 | ✅ | Cada task corresponde a exatamente um subsistema independente do `SKILL.md` (mesmo critério usado para separar os grupos de pesquisa Tavily nesta sessão) — nenhuma mistura dois subsistemas não relacionados |
+| T1–T12 | ✅ | Cada task corresponde a exatamente um subsistema independente do `AGENTS.md` (mesmo critério usado para separar os grupos de pesquisa Tavily nesta sessão) — nenhuma mistura dois subsistemas não relacionados |
 
 ### Check 2: Diagram-Definition Cross-Check
 
@@ -296,4 +296,4 @@ Ver tabela em "Execution Plan" acima — todas batem (✅).
 ## Fontes
 
 - Template de tasks: skill `tlc-spec-driven`, `references/tasks.md`
-- `doc/SKILL.md` (fonte dos paths agrupados por subsistema)
+- `doc/AGENTS.md` (fonte dos paths agrupados por subsistema)

@@ -509,7 +509,7 @@
                 dockerfile: "docker",
             };
 
-            // SKILL.md é a ÚNICA fonte da árvore: cada linha "- `path` (folder|file) → `doc/references/slug.md` — summary"
+            // AGENTS.md é a ÚNICA fonte da árvore: cada linha "- `path` (folder|file) → `doc/references/slug.md` — summary"
             // descreve um nó. A hierarquia é inferida só pelos segmentos de `path` (não pela ordem das linhas).
             function parseSkillIndex(markdown) {
                 const LINE_RE = /^- `([^`]+)` \((folder|file)\) → `doc\/references\/([^`]+)\.md` — (.+)$/;
@@ -698,11 +698,11 @@
             }
 
             async function initTree() {
-                const res = await fetch("SKILL.md");
+                const res = await fetch("AGENTS.md");
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 const entries = parseSkillIndex(await res.text());
                 const tree = buildTree(entries);
-                if (!tree) throw new Error("SKILL.md não contém nenhuma linha de árvore válida");
+                if (!tree) throw new Error("AGENTS.md não contém nenhuma linha de árvore válida");
                 document.getElementById("tree").appendChild(createNode(tree));
 
                 const saved = loadState();

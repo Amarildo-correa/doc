@@ -24,7 +24,7 @@ Passo 5: Marcar como incerto → só se 1-4 não resolveram
 **Como isso se aplica aqui — e por que paramos no Passo 2:**
 
 - **Passo 1 (Codebase)**: não há código real ainda (`promptdown-ui-v3` não foi implementado — ver memória de projeto). Não há padrão de código para checar.
-- **Passo 2 (Docs do projeto)**: aqui a cadeia **já resolve tudo**. `doc/SKILL.md` + os ~90 `doc/references/*.md` já documentam, literalmente, cada arquivo/pasta que precisa existir e por quê. Não é uma decisão de design nova — é dado já disponível.
+- **Passo 2 (Docs do projeto)**: aqui a cadeia **já resolve tudo**. `doc/AGENTS.md` + os ~90 `doc/references/*.md` já documentam, literalmente, cada arquivo/pasta que precisa existir e por quê. Não é uma decisão de design nova — é dado já disponível.
 - **Passos 3 e 4 (Context7/busca web)**: **não acionados**. A regra do skill é "boas razões para pesquisar: bibliotecas novas, APIs desconhecidas, features sensíveis a performance/segurança, padrões nunca usados neste código" — nenhuma dessas se aplica: criar pastas e arquivos vazios não é uma API nova nem um padrão desconhecido.
 - **Passo 5 (incerteza)**: não há nada incerto a marcar — a única coisa "nova" é o próprio script gerador, que é simples o suficiente para não precisar de pesquisa externa (usa só `node:fs`, sem dependência).
 
@@ -34,11 +34,11 @@ Passo 5: Marcar como incerto → só se 1-4 não resolveram
 
 ## Architecture Overview
 
-Um único script gerador lê `doc/SKILL.md` (a mesma fonte de verdade já usada por `exemple.html` e por `scripts/regenerate-skill-md.mjs` neste repositório de estudos) e, para cada linha, garante que o path correspondente exista no repositório de destino — como pasta vazia (`folder`) ou arquivo com um comentário placeholder (`file`).
+Um único script gerador lê `doc/AGENTS.md` (a mesma fonte de verdade já usada por `exemple.html` e por `scripts/regenerate-skill-md.mjs` neste repositório de estudos) e, para cada linha, garante que o path correspondente exista no repositório de destino — como pasta vazia (`folder`) ou arquivo com um comentário placeholder (`file`).
 
 ```mermaid
 graph TD
-    A[doc/SKILL.md] --> B[Parser de linhas]
+    A[doc/AGENTS.md] --> B[Parser de linhas]
     B --> C{type}
     C -->|folder| D[mkdir -p, ou .gitkeep se for folha]
     C -->|file| E{já existe?}
@@ -55,15 +55,15 @@ graph TD
 
 | Component | Location (neste repo `doc`) | How to Use |
 |---|---|---|
-| Regex de parsing de linha do SKILL.md | `exemple.html`, função `parseSkillIndex` (`LINE_RE`) | Reutilizar a mesma regex para extrair `path`/`type`/`slug`/`summary` de cada linha — já testada e em produção neste repositório |
+| Regex de parsing de linha do AGENTS.md | `exemple.html`, função `parseSkillIndex` (`LINE_RE`) | Reutilizar a mesma regex para extrair `path`/`type`/`slug`/`summary` de cada linha — já testada e em produção neste repositório |
 | Lógica de montagem de árvore | `exemple.html`, função `buildTree` | Mesmo princípio (inferir hierarquia pelos segmentos do `path`) pode orientar a ordem de criação (pastas antes dos arquivos-filho) |
-| `scripts/slug.mjs` (`slugify`) | `scripts/slug.mjs` | Não é necessário para o scaffold em si (os slugs já estão escritos no `SKILL.md`), mas é o mesmo utilitário que gerou esses slugs — útil se uma feature futura adicionar novos itens à árvore real |
+| `scripts/slug.mjs` (`slugify`) | `scripts/slug.mjs` | Não é necessário para o scaffold em si (os slugs já estão escritos no `AGENTS.md`), mas é o mesmo utilitário que gerou esses slugs — útil se uma feature futura adicionar novos itens à árvore real |
 
 ### Integration Points
 
 | Sistema | Método de integração |
 |---|---|
-| `doc/SKILL.md` (este repositório) | Lido via `fs.readFileSync`, nunca via fetch HTTP — o scaffold roda localmente (Node.js), não no navegador |
+| `doc/AGENTS.md` (este repositório) | Lido via `fs.readFileSync`, nunca via fetch HTTP — o scaffold roda localmente (Node.js), não no navegador |
 | Repositório de destino (`promptdown-ui-v3`, ainda não criado) | Recebe os paths criados via `fs.mkdirSync`/`fs.writeFileSync`, relativo a um diretório-raiz passado como argumento do script |
 
 ---
@@ -72,7 +72,7 @@ graph TD
 
 ### `scaffold-from-skill.mjs` (script gerador)
 
-- **Purpose**: Ler `doc/SKILL.md` e criar, no repositório de destino, todo path documentado que ainda não existe.
+- **Purpose**: Ler `doc/AGENTS.md` e criar, no repositório de destino, todo path documentado que ainda não existe.
 - **Location**: `scripts/scaffold-from-skill.mjs` (no repositório novo, não em `doc/`)
 - **Interfaces**:
   - `parseSkillLines(markdown: string): Entry[]` — mesma regex de `exemple.html`, retorna `{ path, type, slug, summary }[]`.
@@ -100,7 +100,7 @@ Não aplicável — esta feature não introduz nenhum modelo de dados; ela só c
 
 | Cenário de erro | Tratamento | Impacto para o usuário |
 |---|---|---|
-| Linha do `SKILL.md` não casa com o padrão esperado | Ignorar a linha, registrar aviso no relatório final | Scaffold continua; usuário vê quantas linhas foram ignoradas |
+| Linha do `doc/AGENTS.md` não casa com o padrão esperado | Ignorar a linha, registrar aviso no relatório final | Scaffold continua; usuário vê quantas linhas foram ignoradas |
 | Arquivo de destino já existe | Pular sem sobrescrever (idempotência — requisito SCAFFOLD-02) | Nenhum — comportamento esperado ao rodar de novo |
 | Pasta sem nenhum arquivo-filho documentado | Criar a pasta + `.gitkeep` | Pasta aparece rastreável no git |
 | Path com colisão de case em FS case-insensitive (Windows) | Detectar e listar no relatório como aviso, sem falhar | Usuário decide manualmente como resolver |
@@ -114,5 +114,5 @@ Não aplicável — esta feature não introduz nenhum modelo de dados; ela só c
 
 ## Fontes
 
-- `doc/SKILL.md`, `exemple.html` (`parseSkillIndex`, `buildTree`), `scripts/slug.mjs` — todos já existentes neste repositório
+- `doc/AGENTS.md`, `exemple.html` (`parseSkillIndex`, `buildTree`), `scripts/slug.mjs` — todos já existentes neste repositório
 - Template de design: skill `tlc-spec-driven`, `references/design.md`

@@ -1,4 +1,4 @@
-`promptdown-ui-v3/.specs/features/repo-scaffolding/spec.md` é um exemplo concreto de spec **Large**: bootstrap completo da estrutura de pastas/arquivos do repositório novo, a partir de tudo que já está documentado em `doc/SKILL.md` — sem nenhum conteúdo/lógica real ainda (isso fica para features futuras).
+`promptdown-ui-v3/.specs/features/repo-scaffolding/spec.md` é um exemplo concreto de spec **Large**: bootstrap completo da estrutura de pastas/arquivos do repositório novo, a partir de tudo que já está documentado em `doc/AGENTS.md` — sem nenhum conteúdo/lógica real ainda (isso fica para features futuras).
 
 ---
 
@@ -6,11 +6,11 @@
 
 ## Problem Statement
 
-O repositório `promptdown-ui-v3` ainda não existe — só a documentação/planejamento dele, em `doc/SKILL.md` e `doc/references/*.md` (~90 itens). Antes de implementar qualquer lógica real, é preciso que a árvore de pastas e arquivos exista no disco, vazia ou com placeholders mínimos, exatamente como documentado — para que features futuras tenham onde escrever código, em vez de cada uma precisar criar sua própria estrutura ad-hoc.
+O repositório `promptdown-ui-v3` ainda não existe — só a documentação/planejamento dele, em `doc/AGENTS.md` e `doc/references/*.md` (~90 itens). Antes de implementar qualquer lógica real, é preciso que a árvore de pastas e arquivos exista no disco, vazia ou com placeholders mínimos, exatamente como documentado — para que features futuras tenham onde escrever código, em vez de cada uma precisar criar sua própria estrutura ad-hoc.
 
 ## Goals
 
-- [ ] 100% dos itens listados em `doc/SKILL.md` existem no novo repositório como pasta ou arquivo real.
+- [ ] 100% dos itens listados em `doc/AGENTS.md` existem no novo repositório como pasta ou arquivo real.
 - [ ] Nenhum arquivo tem conteúdo de lógica real — só placeholders (ou vazio) indicando que aquilo é responsabilidade de uma feature futura.
 - [ ] A estrutura é versionável no git imediatamente após o scaffold (pastas vazias não somem por causa do git não rastrear diretórios vazios).
 
@@ -62,12 +62,12 @@ O repositório `promptdown-ui-v3` ainda não existe — só a documentação/pla
 
 **User Story**: Como desenvolvedor que vai usar múltiplos agentes de IA neste projeto, quero que toda a estrutura documentada em `dot-claude.md`, `dot-codex.md`, `dot-cursor.md`, `dot-agents.md` já exista, para configurar cada harness sem redescobrir a convenção manualmente.
 
-**Why P2**: Importante para o fluxo de trabalho com IA descrito no restante do `SKILL.md`, mas não bloqueia rodar a aplicação em si — pode vir depois do P1.
+**Why P2**: Importante para o fluxo de trabalho com IA descrito no restante do `doc/AGENTS.md`, mas não bloqueia rodar a aplicação em si — pode vir depois do P1.
 
 **Acceptance Criteria**:
 
 1. WHEN o scaffold é executado THEN o sistema SHALL criar `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.mcp.json`, `.gitignore` na raiz, e as pastas `.claude/`, `.codex/`, `.cursor/rules/`, `.agents/`, `plugins/promptdown-helpers/` com os exemplos concretos já documentados (`code-reviewer.md`, `deploy-staging.md`, `frontend-stack.md`, etc.).
-2. WHEN uma pasta documentada no `SKILL.md` não tem nenhum arquivo-exemplo associado (só a pasta) THEN o sistema SHALL criar a pasta com um `.gitkeep`, para o git rastreá-la mesmo vazia.
+2. WHEN uma pasta documentada no `doc/AGENTS.md` não tem nenhum arquivo-exemplo associado (só a pasta) THEN o sistema SHALL criar a pasta com um `.gitkeep`, para o git rastreá-la mesmo vazia.
 
 **Independent Test**: Rodar o scaffold, confirmar que `.claude/agents/code-reviewer.md` existe com o conteúdo documentado em `claude-agents-code-reviewer.md`, e que pastas sem arquivo (ex.: `.codex/skills/`) têm `.gitkeep`.
 
@@ -87,10 +87,10 @@ O repositório `promptdown-ui-v3` ainda não existe — só a documentação/pla
 
 ## Edge Cases
 
-- WHEN o `doc/SKILL.md` (fonte da lista de paths) tem uma linha mal formatada THEN o sistema SHALL ignorá-la e registrar um aviso, em vez de falhar o scaffold inteiro.
-- WHEN o diretório de destino já é um repositório git com arquivos não relacionados THEN o sistema SHALL só adicionar o que falta, nunca remover algo que já existe e não está no `SKILL.md`.
-- WHEN uma pasta do `SKILL.md` não tem nenhum arquivo-filho documentado (pasta "folha" vazia) THEN o sistema SHALL criar um `.gitkeep` nela, já que git não versiona diretórios vazios.
-- WHEN o scaffold roda em sistema de arquivos case-insensitive (Windows) THEN o sistema SHALL alertar se dois paths do `SKILL.md` diferem só por maiúscula/minúscula (colisão silenciosa em potencial).
+- WHEN o `doc/AGENTS.md` (fonte da lista de paths) tem uma linha mal formatada THEN o sistema SHALL ignorá-la e registrar um aviso, em vez de falhar o scaffold inteiro.
+- WHEN o diretório de destino já é um repositório git com arquivos não relacionados THEN o sistema SHALL só adicionar o que falta, nunca remover algo que já existe e não está no `doc/AGENTS.md`.
+- WHEN uma pasta do `doc/AGENTS.md` não tem nenhum arquivo-filho documentado (pasta "folha" vazia) THEN o sistema SHALL criar um `.gitkeep` nela, já que git não versiona diretórios vazios.
+- WHEN o scaffold roda em sistema de arquivos case-insensitive (Windows) THEN o sistema SHALL alertar se dois paths do `doc/AGENTS.md` diferem só por maiúscula/minúscula (colisão silenciosa em potencial).
 
 ---
 
@@ -113,11 +113,11 @@ O repositório `promptdown-ui-v3` ainda não existe — só a documentação/pla
 
 ## Success Criteria
 
-- [ ] Rodar o gerador de scaffold uma vez cria 100% dos ~90 itens do `SKILL.md` ausentes no destino.
+- [ ] Rodar o gerador de scaffold uma vez cria 100% dos ~90 itens do `doc/AGENTS.md` ausentes no destino.
 - [ ] Rodar o gerador uma segunda vez não altera nada (idempotente).
 - [ ] `git status` depois do scaffold mostra todas as pastas documentadas como rastreadas (nenhuma pasta vazia "invisível" para o git).
 
 ## Fontes
 
-- `doc/SKILL.md` (fonte de verdade dos ~90 paths a criar)
+- `doc/AGENTS.md` (fonte de verdade dos ~90 paths a criar)
 - Template de spec: skill `tlc-spec-driven`, `references/specify.md`
